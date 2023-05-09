@@ -1,0 +1,17 @@
+body {
+    font-family: 'Fauna One', sans-serif;
+    background-color: #F6F8FA;
+    color: #5C6173;
+    margin: 0;
+    padding: 0;
+    background-image: linear-gradient(to right, #4F6A75, #5A6F78, #70797A, #848786, #70797A, #5A6F78, #4F6A75);
+}
+
+h1 {
+    color: #ffffff;
+    text-align: center;
+    margin-top: 50px;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+    font-family: 'Cinzel', serif;
+    font-size: 90px;
+}
