@@ -11,12 +11,12 @@ body {
   background-position: center;
 }
 
-h1 {
+.menu-game h1 {
   /* font-weight: 300; */
   color: #ffffff;
   text-align: center;
   margin-top: -30px;
-  text-shadow: 4px 4px 10px rgba(0, 0, 0, 0.719);
+  text-shadow: 4px 4px 10px rgba(0, 0, 0, 0.7);
 }
 
 .container {
