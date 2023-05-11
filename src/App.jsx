@@ -4,7 +4,6 @@ import './App.css';
 function App() {
 
   const handleStartGame = () => {
-    // Implement your game start logic here
   }
   const handleHighScore = () => {
 
@@ -13,7 +12,7 @@ function App() {
   return (
     <div className="container">
         <div className="image-container">
-            <img className="chess-image" src="img/chess2.png" alt="chess" />
+            <img className="chess-image" src="img/chess1.png" alt="chess" />
         </div>
         <div className="menu-game">
             <h1 className="animate__animated animate__fadeIn chess-title">Chess</h1>
