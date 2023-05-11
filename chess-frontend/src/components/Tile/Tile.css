@@ -1,7 +1,12 @@
+#root{
+    --red : #B54D3B;
+}
+
 .tile{
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
 }
 
 .black-tile{
@@ -12,7 +17,20 @@
     background-color: #EEEED2;
 }
 
+.selected {
+    background-color: #BBCB2B;
+}
+
+.available-move{
+    background-color: rgba(0,0,0,0.5);
+    position: absolute;
+    border-radius: 50%;
+    width: 50%;
+    height: 50%;
+}
+
 .tile img{
     width: 80%;
     height: 80%;
 }
+

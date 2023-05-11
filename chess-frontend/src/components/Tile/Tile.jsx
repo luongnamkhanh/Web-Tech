@@ -1,6 +1,6 @@
 import "./Tile.css";
 
-function Tile({coordinate, piece}){
+function Tile({coordinate, piece, selectTile, availableMove, selected}){
     const pieceMap = {
         "r" : "Rook_b",
         "n" : "Knight_b",
@@ -18,16 +18,20 @@ function Tile({coordinate, piece}){
     }
 
     const img_path = `./Images/ChessPieces/${pieceMap[piece]}.png`;
-    function selectTile(horizontalCoordinate, vertitalCoordinate){
-        console.log(`Clicked on ${horizontalCoordinate}${vertitalCoordinate}`);
-    }
 
-    console.log(`${coordinate[0]}${coordinate[1]}: ${piece}`);
-
-    if ((coordinate[0].charCodeAt(0) + coordinate[1].charCodeAt(0)) % 2 === 0)
-        return <div className="tile black-tile" onClick={() => selectTile(coordinate[0], coordinate[1])}><img src={img_path}/></div>
-    else
-        return <div className="tile white-tile" onClick={() => selectTile(coordinate[0], coordinate[1])}><img src={img_path}/></div>
+    return <div className={`tile ${(coordinate[0].charCodeAt(0) + coordinate[1].charCodeAt(0)) % 2 === 0 ? "black-tile" : "white-tile"} ${coordinate === selected ? "selected" : ""}`} 
+        onClick={() => {
+            selectTile(coordinate);
+            console.log(`Clicked on ${coordinate}`);
+        }}>
+            {availableMove ? <div className="available-move"/> : ""}
+            <img src={img_path}/>
+        </div>
+    // else
+    //     return <div className="tile white-tile" onClick={() => {
+    //         selectTile(coordinate);
+    //         showMove(coordinate);
+    //     }}><img src={img_path}/></div>
 
 }
 
