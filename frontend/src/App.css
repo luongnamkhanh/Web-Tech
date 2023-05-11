@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500&family=Fauna+One&family=Leckerli+One&family=Patua+One&family=Prata&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@480&family=Fauna+One&family=Leckerli+One&family=Patua+One&family=Prata&display=swap');
 
 body {
   font-family: 'Lato', sans-serif;
@@ -6,7 +6,7 @@ body {
   color: #5C6173;
   margin: 0;
   padding: 0;
-  background-image: linear-gradient(to right, #7895A4, #7593A2, #748591e8, #768084d5, #86756bb6, #a9a19db2, #a9a19d79, #a9a19db2, #86756bb6);
+  background-image: linear-gradient(to right, #85ABBC, #7895A4, #7593A2, #748591e8, #768084d5, #86756bb6, #a9a19db2, #a9a19d79, #a9a19db2, #86756bb6, #768084d5);
   background-size:  contain;
   background-position: center;
 }
@@ -16,7 +16,7 @@ h1 {
   color: #ffffff;
   text-align: center;
   margin-top: -30px;
-  text-shadow: 4px 4px 10px rgba(0, 0, 0, 0.5);
+  text-shadow: 4px 4px 10px rgba(0, 0, 0, 0.719);
 }
 
 .container {
@@ -38,7 +38,7 @@ h1 {
 
 h2 {
   color: #5C6173;
-  margin-top: 0;
+  /* margin-top: -100px; */
 }
 
 .image-container {
@@ -49,12 +49,12 @@ h2 {
 
 .chess-image {
   overflow: hidden;
-  width: 53vw;
+  width: 51vw;
   height: auto;
   filter: 
-    drop-shadow(3px 80px 15px rgba(0, 0, 0, 0.8))
+    drop-shadow(3px 80px 15px rgba(0, 0, 0, 1))
     drop-shadow(0px -4px 10px rgba(236, 236, 236, 0.9)); 
-  margin-top: 20px;
+  margin-top: -130px;
   margin-left:-20px;
 }
 
@@ -71,6 +71,7 @@ h2 {
 .chess-title {
   font-family: 'Cinzel', serif;
   font-size: 120px;
+  margin: 0px 0px 80px -10px;
 }
 
 .element-title {
@@ -82,7 +83,7 @@ h2 {
   background-color: transparent;
   border: none;
   color: #F6F8FA;
-  padding: 5px 15px 5px 0px;
+  padding: 0px 15px 0px 0px;
 }
 .element-title:focus {
   outline: none;
@@ -95,7 +96,7 @@ h2 {
   top: 0;
   left: -40px;
   transition: all 0.3s ease;
-  padding: 5px 15px 5px 0px;
+  padding: 0px 15px 5px 0px;
 }
 
 .element-title:hover {

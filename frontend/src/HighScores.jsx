@@ -1,33 +1,46 @@
-import React, { useEffect, useState } from 'react';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import './HighScores.css';
+import { Table } from "react-bootstrap";
+
 
 function HighScores() {
   const [scores, setScores] = useState([]);
 
   useEffect(() => {
-    fetch('/api/highscores')
-      .then(response => response.json())
-      .then(data => {
-        setScores(data);
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
+    const getHighScores = async () => {
+      const response = await axios.get('http://localhost:3001/api/highscores');
+      setScores(response.data);
+    };
+
+    getHighScores();
   }, []);
 
   return (
-    <div className="container">
-        <h1>High Scores</h1>
-        <ul id="scoreList">
-          {scores.map((scoreItem) => (
-            <li key={scoreItem.username}>
-              {scoreItem.username}: {scoreItem.score}
-            </li>
-          ))}
-        </ul>
+    <div className='highscore-container'>
+      <h1>High Scores</h1>
+      <div className='table-wrapper'>
+        <Table striped bordered hover>
+          <thead className="heading">
+            <tr>
+              <th>Player</th>
+              <th>Rank</th>
+              <th>Score</th>
+            </tr>
+          </thead>
+          <tbody>{
+            scores.map((score, index) => (
+              <tr className='score-box' key={index}>
+                <td>{score.username}</td>
+                <td>{score.rank}</td>
+                <td>{score.score}</td>
+              </tr>
+            ))
+          }</tbody>
+        </Table>
+      </div>
     </div>
   );
 }
 
 export default HighScores;
-
