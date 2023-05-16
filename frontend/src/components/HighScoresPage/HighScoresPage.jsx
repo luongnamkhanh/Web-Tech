@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './HighScores.css';
+import './HighScoresPage.css';
 import { Table } from "react-bootstrap";
 
 
