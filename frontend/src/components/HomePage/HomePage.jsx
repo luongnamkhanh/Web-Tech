@@ -3,11 +3,11 @@ import './HomePage.css';
 import GameImage from './GameImage/GameImage';
 import GameMenu from './GameMenu/GameMenu';
 
-function HomePage({handleStartGame}) {
+function HomePage() {
   return (
     <div className="container">
       <GameImage />
-      <GameMenu handleStartGame={handleStartGame} />
+      <GameMenu  />
     </div>
   );
 }
