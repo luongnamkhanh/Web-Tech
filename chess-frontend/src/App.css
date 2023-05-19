@@ -1,4 +1,16 @@
+#root{
+  --main-gray: #312E2B;
+  --main-dark-gray: #272522;
+  --main-light-gray: #2B2926;
+  --main-dark-green: #769656;
+  --main-light-green: #EEEED2;
+  --main-red : #B54D3B;
+  color: white;
+}
+
 #app{
+  height: 100vh;
   display: flex;
   place-content: center;
+  background-color: var(--main-gray);
 }

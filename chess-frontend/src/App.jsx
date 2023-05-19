@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import './App.css'
-import ChessBoard from "./components/ChessBoard/ChessBoard"
+import IngamePage from './pages/IngamePage/IngamePage'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -8,7 +8,7 @@ function App() {
   return (
     <>
       <div id="app">
-        <ChessBoard />
+        <IngamePage />
       </div>
     </>
   )

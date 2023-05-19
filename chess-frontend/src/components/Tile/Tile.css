@@ -1,7 +1,3 @@
-#root{
-    --red : #B54D3B;
-}
-
 .tile{
     display: flex;
     justify-content: center;
@@ -10,11 +6,11 @@
 }
 
 .black-tile{
-    background-color: #769656;
+    background-color: var(--main-dark-green);
 }
 
 .white-tile{
-    background-color: #EEEED2;
+    background-color: var(--main-light-green);
 }
 
 .selected {
@@ -27,6 +23,10 @@
     border-radius: 50%;
     width: 50%;
     height: 50%;
+}
+
+.capturable{
+    background-color: var(--main-red);
 }
 
 .tile img{
