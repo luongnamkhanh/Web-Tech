@@ -1,0 +1,11 @@
+:root{
+    --size : 500px
+}
+
+#chessboard{
+    display: grid;
+    grid-template-columns: repeat(8, calc(var(--size)/8));
+    grid-template-rows: repeat(8, calc(var(--size)/8));
+    height: var(--size);
+    width: var(--size);
+}
