@@ -1,0 +1,60 @@
+.menu-game {
+    left: 10vw;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+    height: 100vh;
+    position: absolute;
+  }
+  
+  .menu-game h1 {
+    color: #ffffff;
+    text-align: center;
+    margin-top: -30px;
+    text-shadow: 4px 4px 10px rgba(0, 0, 0, 0.7);
+  }
+  
+  .chess-title {
+    font-family: 'Cinzel', serif;
+    font-size: 120px;
+    margin: 0px 0px 80px -10px;
+  }
+  
+  .element-title {
+    font-family: 'Fauna One', serif;
+    font-size: 30px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    background-color: transparent;
+    border: none;
+    color: #F6F8FA;
+    padding: 0px 15px 0px 0px;
+  }
+  
+  .element-title:focus {
+    outline: none;
+    border: none;
+  }
+  
+  .element-title::before {
+    content: ">> ";
+    position: absolute;
+    top: 0;
+    left: -40px;
+    transition: all 0.3s ease;
+    padding: 0px 15px 5px 0px;
+  }
+  
+  .element-title:hover {
+    padding-left: 60px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+    color: rgba(0, 0, 0, 0.5)
+  }
+  
+  .element-title:hover::before {
+    left: 10px;
+  }
+  

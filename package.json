@@ -1,0 +1,16 @@
+{
+  "dependencies": {
+    "cors": "^2.8.5"
+  },
+  "name": "web-tech",
+  "description": "The proposal is to build a web game to play chess, which follows international rules such as casting and a time limit for each move. The game will have a high score chart to honor the best players, with corresponding bronze, silver, and gold ranks. The system will not allow matches between players with a rank difference greater than one.",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
