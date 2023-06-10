@@ -1,37 +1,35 @@
 const express = require('express');
-const cors = require('cors');
-const app = express();
-const { Pool } = require('pg');
-require('dotenv').config();
+const mongoose = require('mongoose');
+const dotenv = require('dotenv');
+const bodyParser = require('body-parser');
+dotenv.config();
 
-// Add this near the top of your file, after creating your Express app
-app.use(cors());
+const userRoutes = require('./routes/userRoutes');
+const matchRoutes = require('./routes/matchRoutes');
+const moveRoutes = require('./routes/moveRoutes');
+
+const app = express()
+const PORT = process.env.PORT || 3000
+const connectionString = process.env.MONGO_URI
+
+mongoose.connect(connectionString)
+    .then(() => {
+        app.listen(PORT, () => {
+            console.log(`Connected to database & Server beating 💓 on port ${PORT}`)
+        })
+    })
+    .catch((error) => {
+        console.log(error)
+    })
+
+//middleware
 app.use(express.json());
+app.use(bodyParser.json());
+app.use((req, res, next) => {
+    console.log(req.path, req.method)
+    next()
+})
 
-const pool = new Pool({
-  user: 'postgres',
-  host: 'localhost',
-  database: 'test',
-  password: '425222',
-  port: 5432,
-});
-
-app.get('/api/highscores', async (req, res) => {
-  try {
-    const result = await pool.query(`
-      SELECT player.username, ranking.rank, ranking.score 
-      FROM player 
-      INNER JOIN ranking ON player.player_id = ranking.player_id 
-      ORDER BY ranking.score DESC 
-      LIMIT 10
-    `);
-    res.json(result.rows);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'An error occurred, please try again' });
-  }
-});
-
-app.listen(3001, () => {
-  console.log('Server is running on port 3001');
-});
+app.use('/users', userRoutes);
+app.use('/matches', matchRoutes);
+app.use('/moves', moveRoutes);
