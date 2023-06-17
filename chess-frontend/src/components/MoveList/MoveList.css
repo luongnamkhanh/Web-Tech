@@ -1,7 +1,6 @@
 .move-list{
   height: 50%;
   overflow-y: scroll;
-  overflow: auto;
 }
 
 ::-webkit-scrollbar {

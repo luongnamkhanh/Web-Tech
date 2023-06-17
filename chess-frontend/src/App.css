@@ -9,7 +9,7 @@
 }
 
 #app{
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   place-content: center;
   background-color: var(--main-gray);

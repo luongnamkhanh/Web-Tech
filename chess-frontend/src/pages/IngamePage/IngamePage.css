@@ -1,21 +1,18 @@
 #in-game{
     display: flex;
     place-content: center;
-    align-items: center;
+    align-items: stretch;
     margin: 5px;
-    width: 100%;
 }
 
 #board{
   display: flex;
   flex-direction: column;
   margin: 0px 10px;
-  height: 100%;
 }
 
 #info-tab{
   background-color: var(--main-dark-gray);
-  height: 100%;
   margin: 0px 10px;
   flex-grow: 0.8;
   border-radius: 10px;

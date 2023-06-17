@@ -6,6 +6,7 @@ import { GameProvider } from "../../context/GameContext";
 import GameResultPopup from "../../components/GameResultPopup/GameResultPopup";
 
 function IngamePage(){
+  let component = GameResultPopup;
     return(
       <GameProvider>
         <div id="in-game">
@@ -18,6 +19,7 @@ function IngamePage(){
             <div id="info-tab">
               <MoveList />
               <GameResultPopup></GameResultPopup>
+              ${component}
             </div>
             
         </div>

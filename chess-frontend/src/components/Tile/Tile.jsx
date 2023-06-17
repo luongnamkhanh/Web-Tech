@@ -24,7 +24,7 @@ function Tile({coordinate, piece, selectTile, availableMove, isSelected, isCheck
     return <div className={`tile ${squareColor} ${isSelected ? "selected" : ""} ${isCapturable || isKingChecked  ? "capturable" : ""}`}
         onClick={() => {
             selectTile(coordinate);
-            console.log(`Clicked on ${coordinate}`);
+            //console.log(`Clicked on ${coordinate}`);
         }}>
             {availableMove ? <div className="available-move"/> : ""}
             <img src={img_path}/>
