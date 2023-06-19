@@ -32,6 +32,17 @@ app.get('/api/highscores', async (req, res) => {
   }
 });
 
-app.listen(3001, () => {
-  console.log('Server is running on port 3001');
+const port = 3001
+const server = app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
 });
+
+const io = require('socket.io')(server, {
+  cors: {
+    origin: "http://localhost:5173",
+  },
+})
+
+io.on('connect', socket => {
+  console.log(socket.id);
+})

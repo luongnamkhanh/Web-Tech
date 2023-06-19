@@ -1,7 +1,16 @@
-function ResignButtom(){
+import { useContext } from "react";
+import { GameContext } from "../../context/GameContext";
 
+function ResignButtom(){
+  const { resign } = useContext(GameContext);
   return(
-    <button className="button"> Resign </button>
+    <button className="button"
+      onClick={() => {
+        resign();
+      }}
+    > 
+      Resign 
+    </button>
   )
 }
 

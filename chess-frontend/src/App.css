@@ -5,7 +5,8 @@
   --main-dark-green: #769656;
   --main-light-green: #EEEED2;
   --main-red : #B54D3B;
-  color: white;
+  --button-gray: #1F1E1B;
+  --button-hover-gray: #171614;
 }
 
 #app{

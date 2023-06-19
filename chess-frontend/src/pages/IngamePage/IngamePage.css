@@ -13,7 +13,7 @@
 
 #info-tab{
   background-color: var(--main-dark-gray);
-  margin: 0px 10px;
-  flex-grow: 0.8;
+  margin: 0px 20px;
+  flex-grow: 1;
   border-radius: 10px;
 }

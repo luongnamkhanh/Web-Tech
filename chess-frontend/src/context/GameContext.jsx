@@ -9,13 +9,22 @@ function GameProvider( {children} ){
   const [selected, setSelected] = useState("");
   const [moveList, setMoveList] = useState(null);
   const [isOver, setIsOver] = useState(false);
+  const [isStarted, setIsStarted] = useState(false);
+  const [menu, setMenu] = useState(0);
+  const [difficulty, setDifficulty] = useState(0);
+  const [isBotGame, setIsBotGame] = useState(false);
+  let playerSide = "white";
 
   function selectTile(coordinate){
-    if (selected != "") //A tile is being selected, proceed to move piece or select an other tile
-      movePiece(coordinate)
-    else{               // No tile is beling selected, proceed to select a tile
-      setAvailableMoves(gameState.moves(coordinate));
-      setSelected(coordinate);
+    if (isStarted){
+      if (gameState.exportJson().turn === playerSide){
+        if (selected != "") //A tile is being selected, proceed to move piece or select an other tile
+          movePiece(coordinate)
+        else{               // No tile is beling selected, proceed to select a tile
+          setAvailableMoves(gameState.moves(coordinate));
+          setSelected(coordinate);
+        }
+      }
     }
   }
 
@@ -25,8 +34,13 @@ function GameProvider( {children} ){
       setGameState(gameState);
       setSelected("");
       setAvailableMoves([]);
-      setMoveList(gameState.getHistory().map(a => {return {from: a.from, to: a.to}}));
-      isGameOver();
+      updateMoveList();
+      if (!isGameOver()){
+        if (isBotGame){
+          console.log("AI turn");
+          gameState.aiMove(difficulty);
+        }
+      };
     }
     catch(err){
       setAvailableMoves(gameState.moves(coordinate));
@@ -38,10 +52,46 @@ function GameProvider( {children} ){
     if (gameState.exportJson().isFinished){
       console.log("Game over");
       setIsOver(true);
+      return true;
     }
+    return false;
+  }
+
+  function updateMoveList(){
+    setMoveList(gameState.getHistory().map(a => {return {from: a.from, to: a.to}}));
+  }
+
+  function startGame(){
+    setIsStarted(true);
+  }
+
+  function resign(){
+    setIsOver(true);
+  }
+
+  function setGameDifficulty(newDifficulty){
+    setDifficulty(newDifficulty);
+    console.log(`Change difficulty to ${newDifficulty}`)
+  }
+
+  function changeMenu(newMenu){
+    setMenu(newMenu);
+    console.log(`Menu changed to: ${newMenu}`)
+  }
+
+  function setBotGame(){
+    setIsBotGame(true);
+    console.log("This is a bot game");
+  }
+
+  function newGame(){
+    setGameState(() => {return new Game()});
+    setIsOver(false);
+    updateMoveList();
+    setIsStarted(true);
   }
   return(
-    <GameContext.Provider value={{gameState, availableMoves, selected, selectTile, moveList, isOver}}>
+    <GameContext.Provider value={{gameState, availableMoves, selected, selectTile, moveList, isOver, startGame, isStarted, resign, changeMenu, menu, difficulty, setGameDifficulty, setBotGame, newGame}}>
       {children}
     </GameContext.Provider>
   )
