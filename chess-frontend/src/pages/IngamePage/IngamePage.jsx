@@ -10,6 +10,7 @@ import { GameContext } from "../../context/GameContext";
 import MainMenu from "../../components/MainMenu/MainMenu";
 import PlayWithBotMenu from "../../components/PlayWithBotMenu/PlayWithBotMenu";
 import InGameMenu from "../../components/InGameMenu/InGameMenu";
+import PlayWithFriendMenu from "../../components/PlayWithFriendMenu/PlayWithFriendMenu";
 
 function IngamePage(){
   const { isStarted, isOver, menu } = useContext(GameContext)
@@ -25,6 +26,7 @@ function IngamePage(){
               { isStarted && <InGameMenu/> }
               { !isStarted && menu === 0 && <MainMenu/> }
               { !isStarted && menu === 1 && <PlayWithBotMenu/> }
+              { !isStarted && menu === 3 && <PlayWithFriendMenu/>}
               {
                 !isStarted && menu === 2 &&
                   <>
