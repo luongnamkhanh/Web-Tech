@@ -1,21 +1,15 @@
 import './App.css'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { Route, BrowserRouter, Routes } from 'react-router-dom'
 import HomePage from './pages/HomePage/HomePage'
 import IngamePage from './pages/IngamePage/IngamePage'
 import HighScoresPage from './pages/HighScoresPage/HighScoresPage'
-import { GameProvider } from './context/GameContext'
+import { GameContext, GameProvider } from './context/GameContext'
 import { useEffect } from "react";
-import { io } from "socket.io-client"
+import { socket } from './components/socket'
+
 
 function App() {
-  const ENDPOINT = 'http://localhost:3001'
-  let socket;
-
-  useEffect(() => {
-    socket = io(ENDPOINT);
-    console.log("Hey");
-  })
 
   return (
     <>
