@@ -37,6 +37,8 @@ const server = app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
 
+let playerList = {};
+
 const io = require('socket.io')(server, {
   cors: {
     origin: "http://localhost:5173",
@@ -45,23 +47,35 @@ const io = require('socket.io')(server, {
 
 io.on('connect', socket => {
   console.log(socket.id);
-  socket.on('join', roomCode =>{
-    console.log(`Room name is ${roomCode}`);
-    socket.join(roomCode);
-    console.log('Joined room');
-  });
-  socket.on('startGame', (roomCode) =>{
-    console.log(`${socket.id} send start game signal to room: ${roomCode}`);
-    const randomSides = getRandomSide();
-    socket.emit("startGame", randomSides[0]);
-    socket.to(roomCode).emit("startGame", randomSides[1]);
-  })
-  socket.on('move', (roomCode, from, to) => {
-    console.log('Sending moves');
-    socket.to(roomCode).emit("opponentMove", from, to);
-  })
+  socket.on('init', playerId => { initializeServerConnection(socket, playerId); });
+  
 })
 
+function initializeServerConnection(socket, playerId){
+  playerList[playerId] = socket.id;
+  socket.on('join', roomCode =>{ joinRoom(socket, roomCode); });
+  socket.on('startGame', roomCode =>{ startGame(socket, roomCode); });
+  socket.on('move', (roomCode, from, to) => { move(socket, roomCode, from, to); });
+  socket.on('invite', (myId, playerId) => { invite(socket, myId, playerId); });
+}
+
+function joinRoom(socket, roomCode){
+  console.log(`Room name is ${roomCode}`);
+  socket.join(roomCode);
+  console.log('Joined room');
+}
+
+function startGame(socket, roomCode){
+  console.log(`${socket.id} send start game signal to room: ${roomCode}`);
+  const randomSides = getRandomSide();
+  socket.emit("startGame", randomSides[0]);
+  socket.to(roomCode).emit("startGame", randomSides[1]);
+}
+
+function move(socket, roomCode, from, to){
+  console.log('Sending moves');
+  socket.to(roomCode).emit("opponentMove", from, to);
+}
 
 function getRandomSide() {
   if (Math.floor(Math.random() * 2) == 0){
@@ -69,6 +83,10 @@ function getRandomSide() {
   }else{
     return ["white", "black"];
   }
+}
+
+function invite(socket, myId, playerId){
+  socket.to(playerList[playerId]).emit('invite', myId);
 }
 
 
