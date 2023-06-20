@@ -1,4 +1,4 @@
-import { useState, createContext } from "react";
+import { useState, createContext, useEffect } from "react";
 import { Game, move, status, moves, aiMove, getFen } from 'js-chess-engine'
 
 const GameContext = createContext();
@@ -14,6 +14,13 @@ function GameProvider( {children} ){
   const [difficulty, setDifficulty] = useState(0);
   const [isBotGame, setIsBotGame] = useState(false);
   let playerSide = "white";
+
+  console.log(gameState);
+
+  useEffect(() => {
+    updateMoveList();
+    console.log("Updated");
+  }, [gameState]);
 
   function selectTile(coordinate){
     if (isStarted){
@@ -31,14 +38,12 @@ function GameProvider( {children} ){
   function movePiece(coordinate){
     try{
       gameState.move(selected, coordinate)
-      setGameState(gameState);
       setSelected("");
       setAvailableMoves([]);
       updateMoveList();
       if (!isGameOver()){
         if (isBotGame){
-          console.log("AI turn");
-          gameState.aiMove(difficulty);
+          AIMove();
         }
       };
     }
@@ -46,6 +51,14 @@ function GameProvider( {children} ){
       setAvailableMoves(gameState.moves(coordinate));
       setSelected(coordinate);
     }
+  }
+
+  function AIMove(){
+    setTimeout(() => {
+      console.log("AI turn");
+      gameState.aiMove(difficulty);
+      updateMoveList();
+  }, 0);
   }
 
   function isGameOver(){
@@ -87,7 +100,6 @@ function GameProvider( {children} ){
   function newGame(){
     setGameState(() => {return new Game()});
     setIsOver(false);
-    updateMoveList();
     setIsStarted(true);
   }
   return(

@@ -6,7 +6,6 @@ import ResignButtom from '../ResignButtom/ResignButtom';
 
 function GameResultPopup (){
   const {isOver} = useContext(GameContext);
-  console.log(`game is over:${isOver}`);
 
   return(
     <Popup
