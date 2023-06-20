@@ -1,0 +1,18 @@
+.mainMenu{
+  display: flex;
+  place-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.buttonMenu{
+  display: flex;
+  place-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.chess-image{
+  width: 200px;
+  object-fit: contain;
+}

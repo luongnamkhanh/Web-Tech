@@ -1,0 +1,22 @@
+.move-item{
+  display: flex;
+  height: 2em;
+  margin-left: 20px;
+}
+
+.move-info{
+  display: flex;
+  height: 100%;
+  align-items: center;
+}
+.move-index{
+  width: 40px;
+}
+
+.move-node{
+  width: 60px;
+}
+
+.white-turn{
+  background-color: var(--main-light-gray);
+}
