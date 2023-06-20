@@ -1,5 +1,6 @@
 import { useState, createContext, useEffect } from "react";
 import { Game, move, status, moves, aiMove, getFen } from 'js-chess-engine'
+import { socket } from "../components/socket";
 
 const GameContext = createContext();
 
@@ -13,14 +14,26 @@ function GameProvider( {children} ){
   const [menu, setMenu] = useState(0);
   const [difficulty, setDifficulty] = useState(0);
   const [isBotGame, setIsBotGame] = useState(false);
-  let playerSide = "white";
-
-  console.log(gameState);
+  const [playerSide, setPlayerSide] = useState('white');
 
   useEffect(() => {
     updateMoveList();
-    console.log("Updated");
   }, [gameState]);
+
+  useEffect(() => {
+    console.log('assigned to socket');
+
+    socket.on("startGame", (side) =>{ 
+      console.log('startGame signal received, starting game'); 
+      startGame(true, side); 
+    });
+
+    socket.on("opponentMove", (to, from) => { 
+      console.log('received opponent\'s move'); 
+      gameState.move(to, from); 
+      updateMoveList();
+    });
+  }, []);
 
   function selectTile(coordinate){
     if (isStarted){
@@ -37,7 +50,8 @@ function GameProvider( {children} ){
 
   function movePiece(coordinate){
     try{
-      gameState.move(selected, coordinate)
+      gameState.move(selected, coordinate);
+      socket.emit('move', 'testRoom', selected, coordinate);
       setSelected("");
       setAvailableMoves([]);
       updateMoveList();
@@ -74,8 +88,19 @@ function GameProvider( {children} ){
     setMoveList(gameState.getHistory().map(a => {return {from: a.from, to: a.to}}));
   }
 
-  function startGame(){
-    setIsStarted(true);
+  function startGame(isSignal = false, side = "white"){
+    if (isBotGame){
+      setPlayerSide(side);
+      setIsStarted(true);
+    }
+    if (!isBotGame){
+      if (!isSignal)
+        socket.emit("startGame", "testRoom");
+      else{
+        setPlayerSide(side);
+        setIsStarted(true);
+      }
+    }
   }
 
   function resign(){
@@ -103,7 +128,7 @@ function GameProvider( {children} ){
     setIsStarted(true);
   }
   return(
-    <GameContext.Provider value={{gameState, availableMoves, selected, selectTile, moveList, isOver, startGame, isStarted, resign, changeMenu, menu, difficulty, setGameDifficulty, setBotGame, newGame}}>
+    <GameContext.Provider value={{gameState, availableMoves, selected, selectTile, moveList, isOver, startGame, isStarted, resign, changeMenu, menu, difficulty, setGameDifficulty, setBotGame, newGame, setPlayerSide}}>
       {children}
     </GameContext.Provider>
   )
