@@ -14,13 +14,8 @@ import { useEffect } from "react";
 import { io } from "socket.io-client"
 
 function App() {
-  const ENDPOINT = 'http://localhost:3001'
-  let socket;
-
-  useEffect(() => {
-    socket = io(ENDPOINT);
-    console.log("Hey");
-  })
+ 
+  
   return (
     <>
       <GameProvider>

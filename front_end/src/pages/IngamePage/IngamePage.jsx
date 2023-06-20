@@ -11,6 +11,7 @@ import MainMenu from "../../components/MainMenu/MainMenu";
 import PlayWithBotMenu from "../../components/PlayWithBotMenu/PlayWithBotMenu";
 import InGameMenu from "../../components/InGameMenu/InGameMenu";
 import PlayWithFriendMenu from "../../components/PlayWithFriendMenu/PlayWithFriendMenu";
+import StartGameButton from "../../components/StartGameButton/StartGameButton";
 
 function IngamePage() {
   const { isStarted, isOver, menu } = useContext(GameContext)
@@ -30,10 +31,7 @@ function IngamePage() {
         {
           !isStarted && menu === 2 &&
           <>
-            <MoveList />
-            <GameResultPopup></GameResultPopup>
-            <ResignButtom></ResignButtom>
-            <StartButton></StartButton>
+            <StartGameButton/>
           </>
         }
 
