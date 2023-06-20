@@ -12,35 +12,35 @@ import PlayWithBotMenu from "../../components/PlayWithBotMenu/PlayWithBotMenu";
 import InGameMenu from "../../components/InGameMenu/InGameMenu";
 import PlayWithFriendMenu from "../../components/PlayWithFriendMenu/PlayWithFriendMenu";
 
-function IngamePage(){
+function IngamePage() {
   const { isStarted, isOver, menu } = useContext(GameContext)
-    return(
-        <div id="in-game">
-            <div id="board">
-              <PlayerInfoBar />
-              <ChessBoard />
-              <PlayerInfoBar />
-            </div>
+  return (
+    <div id="in-game">
+      <div id="board">
+        <PlayerInfoBar isOpponent={true} /> {/* Player 1 (opponent) */}
+        <ChessBoard />
+        <PlayerInfoBar isOpponent={false} /> {/* Player 2 (yourself) */}
+      </div>
 
-            <div id="info-tab">
-              { isStarted && <InGameMenu/> }
-              { !isStarted && menu === 0 && <MainMenu/> }
-              { !isStarted && menu === 1 && <PlayWithBotMenu/> }
-              { !isStarted && menu === 3 && <PlayWithFriendMenu/>}
-              {
-                !isStarted && menu === 2 &&
-                  <>
-                    <MoveList />
-                    <GameResultPopup></GameResultPopup> 
-                    <ResignButtom></ResignButtom> 
-                    <StartButton></StartButton>
-                  </>
-              }
-              
-            </div>
-            
-        </div>
-    )
+      <div id="info-tab">
+        {isStarted && <InGameMenu />}
+        {!isStarted && menu === 0 && <MainMenu />}
+        {!isStarted && menu === 1 && <PlayWithBotMenu />}
+        {!isStarted && menu === 3 && <PlayWithFriendMenu />}
+        {
+          !isStarted && menu === 2 &&
+          <>
+            <MoveList />
+            <GameResultPopup></GameResultPopup>
+            <ResignButtom></ResignButtom>
+            <StartButton></StartButton>
+          </>
+        }
+
+      </div>
+
+    </div>
+  )
 }
 
 export default IngamePage;
