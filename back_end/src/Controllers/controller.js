@@ -7,7 +7,7 @@ const otpGenerator = require('otp-generator');
 
 
 /** middleware for verify user */
-exports.verifyUser= async (req, res, next) => {
+exports.verifyUser = async (req, res, next) => {
     try {
 
         const { username } = req.method == "GET" ? req.query : req.body;
@@ -59,7 +59,7 @@ exports.home = async (req, res) => {
 */
 exports.register = async (req, res) => {
     try {
-        const { username, password, email, profile} = req.body;
+        const { username, password, email, profile } = req.body;
 
         // check the existing user
         const existUsername = User.findOne({ username }).exec();
@@ -123,17 +123,31 @@ exports.login = async (req, res) => {
 
                         if (!passwordCheck) return res.status(400).send({ error: "Don't have Password" });
 
-                        // create jwt token
-                        const token = jwt.sign({
-                            userId: user._id,
-                            username: user.username
-                        }, ENV.JWT_SECRET, { expiresIn: "24h" });
+                        // Set isOnline to true
+                        user.isOnline = true;
 
-                        return res.status(200).send({
-                            msg: "Login Successful...!",
-                            username: user.username,
-                            token
-                        });
+                        // Save the updated user document
+                        user.save()
+                            .then(() => {
+                                // Create jwt token
+                                const token = jwt.sign(
+                                    {
+                                        userId: user._id,
+                                        username: user.username
+                                    },
+                                    ENV.JWT_SECRET,
+                                    { expiresIn: "24h" }
+                                );
+
+                                return res.status(200).send({
+                                    msg: "Login Successful!",
+                                    username: user.username,
+                                    token
+                                });
+                            })
+                            .catch(error => {
+                                return res.status(500).send({ error: "Failed to update user" });
+                            });
 
                     })
                     .catch(error => {
@@ -268,3 +282,15 @@ exports.resetPassword = async (req, res) => {
         return res.status(401).send({ error });
     }
 }
+
+exports.logout = async (req, res) => {
+    // Clear the session and set isOnline to false
+    req.session.destroy();
+    User.updateOne({ _id: req.user.userId }, { isOnline: false })
+        .then(() => {
+            return res.status(200).send({ msg: "Logged out successfully" });
+        })
+        .catch(error => {
+            return res.status(500).send({ error: "Failed to update user" });
+        });
+};
