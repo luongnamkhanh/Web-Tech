@@ -15,6 +15,7 @@ import AdbIcon from '@mui/icons-material/Adb';
 import { useNavigate } from 'react-router-dom';
 import useFetch from '../../hooks/fetch.hook';
 import avatar from '../../assets/profile.png';
+import axios from 'axios';
 
 const pages = [];
 const settings = ['Profile', 'Logout'];
@@ -39,17 +40,23 @@ function ResponsiveAppBar() {
     navigate(`/${page}`);
   };
 
-  const handleCloseUserMenu = (setting) => {
+  const handleCloseUserMenu = async (setting) => {
     setAnchorElUser(null);
     if (setting === 'Logout') {
       const confirmed = window.confirm('Are you sure you want to logout?');
       if (confirmed) {
+        try {
+          const token = localStorage.getItem('token');
+          await axios.post('/api/logout', null, {
+            headers: { 'Authorization': `Bearer ${token}` },
+          });
+        } catch (error) {
+          console.log('Logout request failed:', error);
+        }
         localStorage.removeItem('token');
         navigate('/');
       }
-    } else {
-      navigate(`/${setting}`);
-    }
+    } 
   };
 
   return (
