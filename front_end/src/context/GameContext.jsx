@@ -1,13 +1,15 @@
-import { useState, createContext, useEffect } from "react";
+import { useState, createContext, useEffect } from 'react';
 import { Game, move, status, moves, aiMove, getFen } from 'js-chess-engine'
-import { socket } from "../components/socket";
+import { io } from 'socket.io-client'
 
 const GameContext = createContext();
+const ENDPOINT = 'http://localhost:8080'
+let socket;
 
 function GameProvider( {children} ){
   const [gameState, setGameState] = useState(() => {return new Game()});
   const [availableMoves, setAvailableMoves] = useState([]);
-  const [selected, setSelected] = useState("");
+  const [selected, setSelected] = useState('');
   const [moveList, setMoveList] = useState(null);
   const [isOver, setIsOver] = useState(false);
   const [isStarted, setIsStarted] = useState(false);
@@ -15,30 +17,50 @@ function GameProvider( {children} ){
   const [difficulty, setDifficulty] = useState(0);
   const [isBotGame, setIsBotGame] = useState(false);
   const [playerSide, setPlayerSide] = useState('white');
+  const [roomID, setRoomID] = useState('');
+  const [isInRoom, setIsInRoom] = useState(false);
+  const [isRoomFull, setIsRoomFull] = useState(false);
+  const [isWinner, setIsWinner] = useState(null);
 
   useEffect(() => {
     updateMoveList();
   }, [gameState]);
 
   useEffect(() => {
+    socket = io(ENDPOINT);
+
     console.log('assigned to socket');
 
-    socket.on("startGame", (side) =>{ 
+    socket.on('startGame', (side) =>{ 
       console.log('startGame signal received, starting game'); 
       startGame(true, side); 
     });
 
-    socket.on("opponentMove", (to, from) => { 
-      console.log('received opponent\'s move'); 
+    socket.on('opponentMove', (to, from, oppoID) => { 
+      console.log(`received move from ${oppoID}`); 
       gameState.move(to, from); 
       updateMoveList();
     });
+
+    socket.on('join', handleJoinRoom);
+
+    socket.on('resign', opponentResign);
   }, []);
+
+  function handleJoinRoom(reply){
+    if (reply < 2){
+      setIsInRoom(true);
+      if (reply == 1){
+        setIsRoomFull(true);
+      }
+    }else
+      setIsRoomFull(true);
+  }
 
   function selectTile(coordinate){
     if (isStarted){
       if (gameState.exportJson().turn === playerSide){
-        if (selected != "") //A tile is being selected, proceed to move piece or select an other tile
+        if (selected != '') //A tile is being selected, proceed to move piece or select an other tile
           movePiece(coordinate)
         else{               // No tile is beling selected, proceed to select a tile
           setAvailableMoves(gameState.moves(coordinate));
@@ -51,8 +73,8 @@ function GameProvider( {children} ){
   function movePiece(coordinate){
     try{
       gameState.move(selected, coordinate);
-      socket.emit('move', 'testRoom', selected, coordinate);
-      setSelected("");
+      socket.emit('move', roomID, selected, coordinate);
+      setSelected('');
       setAvailableMoves([]);
       updateMoveList();
       if (!isGameOver()){
@@ -69,7 +91,7 @@ function GameProvider( {children} ){
 
   function AIMove(){
     setTimeout(() => {
-      console.log("AI turn");
+      console.log('AI turn');
       gameState.aiMove(difficulty);
       updateMoveList();
   }, 0);
@@ -77,9 +99,13 @@ function GameProvider( {children} ){
 
   function isGameOver(){
     if (gameState.exportJson().isFinished){
-      console.log("Game over");
+      console.log('Game over');
       setIsOver(true);
-      return true;
+      if (gameState.exportJson().turn === playerSide)
+        setIsWinner(true);
+      else
+        setIsWinner(false);
+      return true;  
     }
     return false;
   }
@@ -88,14 +114,16 @@ function GameProvider( {children} ){
     setMoveList(gameState.getHistory().map(a => {return {from: a.from, to: a.to}}));
   }
 
-  function startGame(isSignal = false, side = "white"){
+  function startGame(isSignal = false, side = 'white'){
     if (isBotGame){
       setPlayerSide(side);
       setIsStarted(true);
     }
     if (!isBotGame){
-      if (!isSignal)
-        socket.emit("startGame", "testRoom");
+      if (!isSignal){
+        socket.emit('startGame', roomID);
+        console.log(`${socket.id} send start signal`);
+      }
       else{
         setPlayerSide(side);
         setIsStarted(true);
@@ -105,6 +133,13 @@ function GameProvider( {children} ){
 
   function resign(){
     setIsOver(true);
+    setIsWinner(false);
+    socket.emit('resign', roomID);
+  }
+
+  function opponentResign(){
+    setIsOver(true);
+    setIsWinner(true);
   }
 
   function setGameDifficulty(newDifficulty){
@@ -119,19 +154,29 @@ function GameProvider( {children} ){
 
   function setBotGame(){
     setIsBotGame(true);
-    console.log("This is a bot game");
+    console.log('This is a bot game');
   }
 
   function newGame(){
     setGameState(() => {return new Game()});
     setIsOver(false);
-    setIsStarted(true);
+    setIsStarted(false);
+    setIsWinner(null);
+    
+    console.log(isBotGame);
+    if (!isBotGame){
+      socket.emit('leaveRoom', roomID);
+      setIsInRoom(false);
+      setRoomID('');
+      setIsRoomFull(false);
+      setMenu(0);
+    }
   }
   return(
-    <GameContext.Provider value={{gameState, availableMoves, selected, selectTile, moveList, isOver, startGame, isStarted, resign, changeMenu, menu, difficulty, setGameDifficulty, setBotGame, newGame, setPlayerSide}}>
+    <GameContext.Provider value={{gameState, availableMoves, selected, selectTile, moveList, isOver, startGame, isStarted, resign, changeMenu, menu, difficulty, setGameDifficulty, setBotGame, newGame, setPlayerSide, roomID, setRoomID, isInRoom, isRoomFull, isWinner, playerSide}}>
       {children}
     </GameContext.Provider>
   )
 }
 
-export {GameContext, GameProvider}
+export {GameContext, GameProvider, socket}
