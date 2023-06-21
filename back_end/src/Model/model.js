@@ -16,7 +16,8 @@ const UserSchema = new Schema({
         required : [true, "Please provide a unique email"],
         unique: true,
     },
-    profile: { type: String}
+    profile: { type: String},
+    isOnline: { type: Boolean, default: false},
     
 });
 
