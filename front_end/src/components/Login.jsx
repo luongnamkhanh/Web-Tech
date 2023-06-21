@@ -6,7 +6,7 @@ import { useFormik } from 'formik';
 import { validateForm } from '../helper/validate'
 import { verifyPassword } from '../helper/helper'
 import { useAuthStore } from '../store/store'
-
+import { socket } from '../context/GameContext';
 import styles from '../styles/Username.module.css';
 
 export default function Login() {
@@ -34,6 +34,8 @@ export default function Login() {
       loginPromise.then(res => {
         let { token } = res.data;
         localStorage.setItem('token', token);
+        socket.emit('init', values.username);
+        console.log(`Sent init signal with name ${values.username}`);
         navigate('/homepage')
       })
     }
