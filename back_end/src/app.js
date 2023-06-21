@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 const router = require('./routes/router.js');
-
+const session = require('express-session');
 
 const app = express();
 
@@ -14,6 +14,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use(morgan('tiny'));
+app.use(
+    session({
+        secret: '123456',
+        resave: false,
+        saveUninitialized: false,
+    })
+);
 app.disable('x-powered-by'); // less hackers know about our stack
 
 

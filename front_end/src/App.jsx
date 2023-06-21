@@ -1,4 +1,3 @@
-import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
 import Layout from './components/Layout';
@@ -12,10 +11,33 @@ import HighScoresPage from './pages/HighScoresPage/HighScoresPage'
 import { GameProvider } from './context/GameContext'
 import { useEffect } from "react";
 import { io } from "socket.io-client"
+import { logout } from './helper/helper';
 
 function App() {
- 
+  // useEffect(() => {
+  //   const handleTabClose = async event => {
+  //     event.preventDefault();
   
+  //     try {
+  //       const token = localStorage.getItem('token');
+  //       await axios.put('/api/updateOnlineStatus', { isOnline: false }, {
+  //         headers: {
+  //           'Authorization': `Bearer ${token}`
+  //         }
+  //       });
+  //     } catch (error) {
+  //       console.log('Error updating online status:', error);
+  //     }
+  
+  //     console.log('beforeunload event triggered');
+  //   };
+  
+  //   window.addEventListener('beforeunload', handleTabClose);
+  
+  //   return () => {
+  //     window.removeEventListener('beforeunload', handleTabClose);
+  //   };
+  // }, []);
   return (
     <>
       <GameProvider>
