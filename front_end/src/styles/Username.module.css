@@ -19,7 +19,7 @@
 
 .btn{
     @apply border  w-3/4 py-4 rounded-lg text-gray-50 text-xl shadow-sm text-center;
-    background-color: rgb(99 102 241) !important;
+    background-color: #769656 !important;
 }
 
 
