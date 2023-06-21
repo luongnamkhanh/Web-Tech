@@ -1,0 +1,7 @@
+.roomInput{
+  display: flex;
+  flex-direction: column;
+  place-content: center;
+  align-items: center;
+  padding-top: 20px;
+}

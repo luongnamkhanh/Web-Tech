@@ -5,7 +5,7 @@ import { GameContext } from "../../context/GameContext";
 import ResignButtom from '../ResignButtom/ResignButtom';
 
 function GameResultPopup (){
-  const {isOver} = useContext(GameContext);
+  const {isOver, isWinner} = useContext(GameContext);
 
   return(
     <Popup
@@ -20,6 +20,7 @@ function GameResultPopup (){
           </button>
           <div className="header"> GameOver </div>
           <div className="content">
+            {isWinner ? "You win" : "You lose"}
           </div>
           
         </div>
