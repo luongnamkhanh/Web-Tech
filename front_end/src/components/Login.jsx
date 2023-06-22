@@ -8,9 +8,17 @@ import { verifyPassword } from '../helper/helper'
 import { useAuthStore } from '../store/store'
 import { socket } from '../context/GameContext';
 import styles from '../styles/Username.module.css';
-
+import { useContext } from 'react';
+import { UserContext } from '../context/UserContext';
+import useFetch from '../hooks/fetch.hook';
 export default function Login() {
+  const [{ apiData }] = useFetch();
+  const { setUserApiData } = useContext(UserContext);
 
+  useEffect(() =>{
+    console.log(apiData);
+    setUserApiData(apiData);
+  }, [apiData])
   const navigate = useNavigate();
   const setUsername = useAuthStore(state => state.setUsername);
 

@@ -20,6 +20,9 @@ import axios from 'axios';
 
 const pages = [];
 const settings = ['Profile', 'Logout'];
+const style = {
+  background : '#769656'
+};
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -59,7 +62,7 @@ function ResponsiveAppBar() {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" sx={style}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
