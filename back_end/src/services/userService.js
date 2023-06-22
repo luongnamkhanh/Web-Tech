@@ -75,8 +75,8 @@ exports.updateRank = function(userId, won) {
     });
 };
 
-exports.enterPromotionSeries = function(userId) {
-    return User.findById(userId).then(user => {
+exports.enterPromotionSeries = function(username) {
+    return User.findOne({ username }).then(user => {
         if(user.points >= 10) {
             user.in_promotion_series = true;
         } else {

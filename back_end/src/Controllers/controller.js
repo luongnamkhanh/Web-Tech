@@ -339,6 +339,7 @@ exports.updateRank = function(req, res) {
             if(user.in_promotion_series) {
                 user.points = Math.max(0, user.points - 5);
                 user.promotion_series_won = 0;
+                user.in_promotion_series = false;
             } else {
                 user.points = Math.max(0, user.points - 1);
             }
