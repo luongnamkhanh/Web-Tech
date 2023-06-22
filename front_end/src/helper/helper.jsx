@@ -116,3 +116,17 @@ export async function resetPassword({ username, password }) {
     }
 }
 
+// update rank
+
+export async function updatePlayerRank(username, won) {
+    try {
+        const response = await axios.put('/api/updateRank', {
+            username: username,
+            won: won,
+        });
+        console.log(response);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
