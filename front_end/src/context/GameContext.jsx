@@ -22,7 +22,7 @@ function GameProvider({ children }) {
   const [isInRoom, setIsInRoom] = useState(false);
   const [isRoomFull, setIsRoomFull] = useState(false);
   const [isWinner, setIsWinner] = useState(null);
-  const username = getUsernameSync().username
+  const username = getUsernameSync()?.username
 
   useEffect(() => {
     updateMoveList();

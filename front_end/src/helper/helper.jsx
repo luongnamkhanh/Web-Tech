@@ -18,7 +18,7 @@ export async function getUsername() {
 
 export function getUsernameSync() {
     const token = localStorage.getItem('token')
-    if (!token) throw Error("not found token")
+    if (!token) return null;
     let decode = jwt_decode(token)
     return decode;
 }
