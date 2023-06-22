@@ -1,14 +1,12 @@
-let listOfPlayer;
+let listOfPlayer = [];
+let roomManager = [];
 
-const initializeGame = (io, socket, playerList) =>{
-  console.log(`Player list: ${playerList}`);
-  listOfPlayer = playerList;
-
+const initializeGame = (io, socket) =>{
   //Add player to list
   socket.on('init', (newPlayer) => playerInit(newPlayer, socket));
 
   //Remove player from list
-  socket.on('disconnect', () => playerLeave(socket));
+  socket.on('disconnect', () => playerDisconnect(socket));
 
   //Invite
   socket.on('invite', (playerUsername, friendUsername) => playerInvite(playerUsername, friendUsername, socket));
@@ -26,33 +24,29 @@ const initializeGame = (io, socket, playerList) =>{
   socket.on('resign', (roomID) => opponentResign(roomID, socket));
 
   //Player leave room
-  socket.on('leave', (roomID) => playerLeaveRoom(roomID, socket));
+  socket.on('leaveRoom', (roomID) => playerLeaveRoom(roomID, socket));
 }
 
 function playerInit(newPlayer, socket){
   console.log(listOfPlayer);
   listOfPlayer[newPlayer] = socket.id;
+  roomManager[socket.id] = '';
   console.log(listOfPlayer);
   console.log(`New player ${newPlayer} join with socket id ${socket.id}`);
 }
 
-function playerLeave(socket){
-  const roomIDs = Array.from(socket.rooms);
-
-  roomIDs.forEach(roomId => {
-    // Exclude the default room (socket's own ID)
-    if (roomId !== socket.id) {
-      socket.to(roomId).emit('resign');
-    }
-  });
+function playerDisconnect(socket){
+  console.log(`Player Disconnect`);
+  playerLeaveRoom(roomManager[socket.id], socket);
+  delete roomManager[socket.id];
 
   for (var name in listOfPlayer)
     if (listOfPlayer[name] == socket.id){
       console.log(`Player ${name} leaved`);
       delete listOfPlayer[name];
-      console.log(`Player list ${listOfPlayer}=`);
       break;
     }
+  console.log(listOfPlayer);
 
 }
 
@@ -61,6 +55,7 @@ function playerJoinRoom(roomID, socket, io){
   const numberOfPlayer = room ? room.size : 0;
   if (numberOfPlayer < 2){
     socket.join(roomID);
+    roomManager[socket.id] = roomID;
     console.log(`Joined room ${roomID} with ${numberOfPlayer} player`);
     socket.emit('join', numberOfPlayer);
     if (numberOfPlayer == 1){
@@ -103,7 +98,10 @@ function opponentResign(roomID, socket){
 }
 
 function playerLeaveRoom(roomID, socket){
+  console.log(`${socket.id} leaves room ${roomID}`);
+  socket.to(roomID).emit('leaveRoom');
   socket.leave(roomID);
+  roomManager[socket.id] = '';
 }
 
 
