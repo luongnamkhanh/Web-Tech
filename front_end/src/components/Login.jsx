@@ -34,8 +34,6 @@ export default function Login() {
       loginPromise.then(res => {
         let { token } = res.data;
         localStorage.setItem('token', token);
-        socket.emit('init', values.username);
-        console.log(`Sent init signal with name ${values.username}`);
         navigate('/homepage')
       })
     }

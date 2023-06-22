@@ -3,7 +3,7 @@ import { Game, move, status, moves, aiMove, getFen } from 'js-chess-engine'
 import { io } from 'socket.io-client'
 
 const GameContext = createContext();
-const ENDPOINT = 'http://localhost:8080'
+const ENDPOINT = 'http://localhost:8080';
 let socket;
 
 function GameProvider( {children} ){
@@ -45,6 +45,8 @@ function GameProvider( {children} ){
     socket.on('join', handleJoinRoom);
 
     socket.on('resign', opponentResign);
+
+    socket.on('leaveRoom', opponentLeaveRoom);
   }, []);
 
   function handleJoinRoom(reply){
@@ -58,7 +60,7 @@ function GameProvider( {children} ){
   }
 
   function selectTile(coordinate){
-    if (isStarted){
+    if (isStarted && !isOver){
       if (gameState.exportJson().turn === playerSide){
         if (selected != '') //A tile is being selected, proceed to move piece or select an other tile
           movePiece(coordinate)
@@ -72,6 +74,7 @@ function GameProvider( {children} ){
 
   function movePiece(coordinate){
     try{
+      console.log(`Started: ${isStarted}`);
       gameState.move(selected, coordinate);
       socket.emit('move', roomID, selected, coordinate);
       setSelected('');
@@ -132,14 +135,19 @@ function GameProvider( {children} ){
   }
 
   function resign(){
+    console.log(isStarted);
     setIsOver(true);
     setIsWinner(false);
     socket.emit('resign', roomID);
   }
 
   function opponentResign(){
-    setIsOver(true);
-    setIsWinner(true);
+    setIsStarted((preState) =>{
+      console.log(preState);
+      setIsOver(true);
+      setIsWinner(true);
+      return preState;
+    })
   }
 
   function setGameDifficulty(newDifficulty){
@@ -166,12 +174,23 @@ function GameProvider( {children} ){
     console.log(isBotGame);
     if (!isBotGame){
       socket.emit('leaveRoom', roomID);
-      setIsInRoom(false);
-      setRoomID('');
-      setIsRoomFull(false);
+      leaveRoom();
       setMenu(0);
     }
   }
+
+  function opponentLeaveRoom(){
+    console.log(`opponent leaved`);
+    setIsRoomFull(false);
+    opponentResign();
+  }
+
+  function leaveRoom(){
+    setIsInRoom(false);
+    setIsRoomFull(false);
+    setRoomID('');
+  }
+
   return(
     <GameContext.Provider value={{gameState, availableMoves, selected, selectTile, moveList, isOver, startGame, isStarted, resign, changeMenu, menu, difficulty, setGameDifficulty, setBotGame, newGame, setPlayerSide, roomID, setRoomID, isInRoom, isRoomFull, isWinner, playerSide}}>
       {children}
