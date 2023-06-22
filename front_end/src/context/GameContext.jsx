@@ -1,8 +1,7 @@
 import { useState, createContext, useEffect } from 'react';
 import { Game, move, status, moves, aiMove, getFen } from 'js-chess-engine'
 import { io } from 'socket.io-client'
-import { updatePlayerRank } from '../helper/helper.jsx';
-import { useAuthStore } from '../store/store';
+import { updatePlayerRank, getUsernameSync } from '../helper/helper.jsx';
 
 const GameContext = createContext();
 const ENDPOINT = 'http://localhost:8080'
@@ -23,7 +22,7 @@ function GameProvider({ children }) {
   const [isInRoom, setIsInRoom] = useState(false);
   const [isRoomFull, setIsRoomFull] = useState(false);
   const [isWinner, setIsWinner] = useState(null);
-  const username = useAuthStore(state => state.username);
+  const username = getUsernameSync().username
 
   useEffect(() => {
     updateMoveList();
@@ -40,6 +39,7 @@ function GameProvider({ children }) {
     });
 
     socket.on('opponentMove', (to, from, oppoID) => {
+      console.log(`opo moves ${to} ${from}`)
       console.log(`received move from ${oppoID}`);
       gameState.move(to, from);
       updateMoveList();
@@ -142,11 +142,13 @@ function GameProvider({ children }) {
     setIsOver(true);
     setIsWinner(false);
     socket.emit('resign', roomID);
+    updatePlayerRank(username, false);
   }
 
   function opponentResign() {
     setIsOver(true);
     setIsWinner(true);
+    updatePlayerRank(username, true);
   }
 
   function setGameDifficulty(newDifficulty) {

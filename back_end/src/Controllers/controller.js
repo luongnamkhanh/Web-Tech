@@ -312,7 +312,8 @@ exports.getUsersByRank = async (req, res) => {
 }
 
 exports.updateRank = function(req, res) {
-     const username = req.body.username;
+
+    const username = req.body.username;
     const won = req.body.won;
     return User.findOne({ username }).then(user => {
         user.games_played++;
@@ -346,5 +347,5 @@ exports.updateRank = function(req, res) {
         .then(() => res.status(200).json({ message: "User rank updated successfully" }))
         .catch((error) => res.status(500).json({ error: "Failed to update user rank" }));
     })
-    .catch((error) => res.status(500).json({ error: "Internal server error" }));
+    .catch((error) => {console.log(error); res.status(500).json({ error: "Internal server error" })});
 };

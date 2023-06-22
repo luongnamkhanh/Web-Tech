@@ -16,6 +16,13 @@ export async function getUsername() {
     return decode;
 }
 
+export function getUsernameSync() {
+    const token = localStorage.getItem('token')
+    if (!token) throw Error("not found token")
+    let decode = jwt_decode(token)
+    return decode;
+}
+
 /** authenticate function */
 export async function authenticate(username) {
     try {
@@ -119,6 +126,8 @@ export async function resetPassword({ username, password }) {
 // update rank
 
 export async function updatePlayerRank(username, won) {
+    console.log("username", username)
+    console.log("won", won)
     try {
         const response = await axios.put('/api/updateRank', {
             username: username,
