@@ -294,3 +294,19 @@ exports.logout = async (req, res) => {
             return res.status(500).send({ error: "Failed to update user" });
         });
 };
+
+exports.getUsersByRank = async (req, res) => {
+    const { rank } = req.query;
+    try {
+        const users = await User.find({rank: rank}).exec();
+
+        let resp = users.map((user) => user.toObject()).map(({ password, ...rest}) => rest)
+        resp.sort((a,b) => (a.points < b.points ? 1 : ((a.points == b.points) ? 0 : -1)));
+        resp = resp.slice(0, 10);
+        return res.status(200).json({
+            data: resp
+        });
+    } catch (error) {
+        return res.status(500).json({ error: "Internal server error" });
+    }
+}

@@ -49,7 +49,7 @@ function App() {
               <Route path="profile" element={<ProfilePage />} />
               <Route path="username" element={<UsernamePage />} />
               <Route path="game" element={<IngamePage />} />
-              <Route path="highscore" element={<HighScoresPage />} />
+              <Route path="highscores" element={<HighScoresPage />} />
             </Route>
           </Routes>
         </Router>
