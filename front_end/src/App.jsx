@@ -28,13 +28,13 @@ function App() {
       } catch (error) {
         console.log('Logout request failed:', error);
       }
-      console.log('beforeunload event triggered');
+      console.log('unload event triggered');
     };
 
-    window.addEventListener('beforeunload', handleTabClose);
+    window.addEventListener('unload', handleTabClose);
 
     return () => {
-      window.removeEventListener('beforeunload', handleTabClose);
+      window.removeEventListener('unload', handleTabClose);
     };
   }, []);
   return (

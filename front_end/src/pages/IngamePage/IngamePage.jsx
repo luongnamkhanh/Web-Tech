@@ -12,9 +12,19 @@ import PlayWithBotMenu from "../../components/PlayWithBotMenu/PlayWithBotMenu";
 import InGameMenu from "../../components/InGameMenu/InGameMenu";
 import PlayWithFriendMenu from "../../components/PlayWithFriendMenu/PlayWithFriendMenu";
 import StartGameButton from "../../components/StartGameButton/StartGameButton";
+import { useEffect } from "react";
+import { UserContext } from "../../context/UserContext";
+import useFetch from "../../hooks/fetch.hook";
 
 function IngamePage() {
   const { isStarted, isOver, menu } = useContext(GameContext)
+  const [{ apiData }] = useFetch();
+  const { setUserApiData } = useContext(UserContext);
+
+  useEffect(() =>{
+    console.log(apiData);
+    setUserApiData(apiData);
+  }, [apiData])
   return (
     <div id="in-game">
       <div id="board">

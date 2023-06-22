@@ -9,5 +9,6 @@ export const StyledButton = styled(Button)`
   height: 100px;
   color: white;
   border-radius: 5px;
-  margin: 10px
+  margin: 10px;
+  text-transform: none; 
 `;
