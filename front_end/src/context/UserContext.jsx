@@ -4,13 +4,14 @@ const UserContext = createContext();
 
 function UserProvider( {children} ){
   const [userAPIData, setUserApiData] = useState(null);
+  const [opponentAPIData, setOpponentAPIData] = useState(null);
 
   useEffect(() => {
     userAPIData && socket.emit('init', userAPIData.username);
   }, [userAPIData]);
 
   return(
-    <UserContext.Provider value={{userAPIData, setUserApiData}}>
+    <UserContext.Provider value={{userAPIData, setUserApiData, opponentAPIData, setOpponentAPIData}}>
       {children}
     </UserContext.Provider>
   )

@@ -11,9 +11,9 @@ import extend from '../../styles/Profile.module.css'
 import { UserContext } from "../../context/UserContext";
 
 function PlayerInfoBar({ isOpponent }){
-  const { userAPIData } = useContext(UserContext);
-  const avatar_path = isOpponent ? './Images/Avatar/default.jpg' : userAPIData?.profile; // Change the avatar path logic
-  const playerName = isOpponent ? 'Opponent' : userAPIData?.username; // Change the player name logic
+  const { userAPIData, opponentAPIData } = useContext(UserContext);
+  const avatar_path = isOpponent ? (opponentAPIData ? opponentAPIData?.profile : './Images/Avatar/default.jpg' ): userAPIData?.profile; // Change the avatar path logic
+  const playerName = isOpponent ? (opponentAPIData ? opponentAPIData?.username : 'Opponent') : userAPIData?.username; // Change the player name logic
 
   return(
     <>

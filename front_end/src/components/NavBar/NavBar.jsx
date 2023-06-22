@@ -56,7 +56,7 @@ function ResponsiveAppBar() {
           console.log('Logout request failed:', error);
         }
         localStorage.removeItem('token');
-        navigate('/');
+        window.location.href = '/';
       }
     } 
   };
@@ -69,8 +69,8 @@ function ResponsiveAppBar() {
           <Typography
             variant="h6"
             noWrap
-            component={Link}
-            to="/homepage"
+            component="a"
+            href="/homepage"
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },

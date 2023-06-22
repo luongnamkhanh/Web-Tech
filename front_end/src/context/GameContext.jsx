@@ -1,6 +1,8 @@
-import { useState, createContext, useEffect } from 'react';
+import { useState, createContext, useEffect, useContext } from 'react';
 import { Game, move, status, moves, aiMove, getFen } from 'js-chess-engine'
 import { io } from 'socket.io-client'
+import { getUser } from '../helper/helper';
+import { UserContext } from './UserContext';
 
 const GameContext = createContext();
 const ENDPOINT = 'http://localhost:8080';
@@ -21,10 +23,25 @@ function GameProvider( {children} ){
   const [isInRoom, setIsInRoom] = useState(false);
   const [isRoomFull, setIsRoomFull] = useState(false);
   const [isWinner, setIsWinner] = useState(null);
+  const [opponentName, setOpponentName] = useState(null);
+  const { setOpponentAPIData } = useContext(UserContext);
 
   useEffect(() => {
     updateMoveList();
   }, [gameState]);
+
+  useEffect(() =>{
+    async function getOpponentData() {
+      const response = await getUser(opponentName);
+      return response.data
+    }
+
+    getOpponentData().then((res) =>{
+      setOpponentAPIData(res);
+      console.log(res.username);
+    });
+    
+  }, [opponentName]);
 
   useEffect(() => {
     socket = io(ENDPOINT);
@@ -49,11 +66,12 @@ function GameProvider( {children} ){
     socket.on('leaveRoom', opponentLeaveRoom);
   }, []);
 
-  function handleJoinRoom(reply){
-    if (reply < 2){
+  function handleJoinRoom(numberOfPlayer, playerName){
+    if (numberOfPlayer < 2){
       setIsInRoom(true);
-      if (reply == 1){
+      if (numberOfPlayer == 1){
         setIsRoomFull(true);
+        setOpponentName(playerName);
       }
     }else
       setIsRoomFull(true);
@@ -183,12 +201,14 @@ function GameProvider( {children} ){
     console.log(`opponent leaved`);
     setIsRoomFull(false);
     opponentResign();
+    setOpponentName(null);
   }
 
   function leaveRoom(){
     setIsInRoom(false);
     setIsRoomFull(false);
     setRoomID('');
+    setOpponentName(null);
   }
 
   return(
