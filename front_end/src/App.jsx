@@ -13,32 +13,30 @@ import { useEffect } from "react";
 import { io } from "socket.io-client"
 import { logout } from './helper/helper';
 import { UserProvider } from './context/UserContext';
+import axios from 'axios';
 
 function App() {
-  // useEffect(() => {
-  //   const handleTabClose = async event => {
-  //     event.preventDefault();
-  
-  //     try {
-  //       const token = localStorage.getItem('token');
-  //       await axios.put('/api/updateOnlineStatus', { isOnline: false }, {
-  //         headers: {
-  //           'Authorization': `Bearer ${token}`
-  //         }
-  //       });
-  //     } catch (error) {
-  //       console.log('Error updating online status:', error);
-  //     }
-  
-  //     console.log('beforeunload event triggered');
-  //   };
-  
-  //   window.addEventListener('beforeunload', handleTabClose);
-  
-  //   return () => {
-  //     window.removeEventListener('beforeunload', handleTabClose);
-  //   };
-  // }, []);
+  useEffect(() => {
+    const handleTabClose = async event => {
+      event.preventDefault();
+
+      try {
+        const token = localStorage.getItem('token');
+        await axios.post('/api/logout', null, {
+          headers: { 'Authorization': `Bearer ${token}` },
+        });
+      } catch (error) {
+        console.log('Logout request failed:', error);
+      }
+      console.log('beforeunload event triggered');
+    };
+
+    window.addEventListener('beforeunload', handleTabClose);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleTabClose);
+    };
+  }, []);
   return (
     <>
       <UserProvider>
