@@ -13,8 +13,9 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { useNavigate } from 'react-router-dom';
-import useFetch from '../../hooks/fetch.hook';
 import avatar from '../../assets/profile.png';
+import { UserContext } from '../../context/UserContext';
+import { Link } from 'react-router-dom';
 
 const pages = [];
 const settings = ['Profile', 'Logout'];
@@ -23,9 +24,7 @@ function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const navigate = useNavigate();
-  const [{ isLoading, apiData, serverError }] = useFetch();
-  console.log(apiData);
-
+  const { userAPIData } = React.useContext(UserContext);
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -60,8 +59,8 @@ function ResponsiveAppBar() {
           <Typography
             variant="h6"
             noWrap
-            component="a"
-            href="/"
+            component={Link}
+            to="/homepage"
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
@@ -146,7 +145,7 @@ function ResponsiveAppBar() {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open Profile">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src={apiData?.profile || avatar} />
+                <Avatar alt="Remy Sharp" src={userAPIData?.profile || avatar} />
               </IconButton>
             </Tooltip>
             <Menu

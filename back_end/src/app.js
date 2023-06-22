@@ -28,9 +28,6 @@ app.disable('x-powered-by'); // less hackers know about our stack
 
 const port = 8080;
 
-let playerList = [];
-console.log(playerList);
-
 /** api routes */
 app.use('/api', router)
 
@@ -46,7 +43,7 @@ const io = require('socket.io')(server, {
 
 io.on('connect', socket => {
     console.log(socket.id);
-    socketGameLogic.initializeGame(io, socket, playerList);
+    socketGameLogic.initializeGame(io, socket);
 })
 
 

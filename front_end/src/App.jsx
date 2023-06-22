@@ -12,6 +12,7 @@ import { GameProvider } from './context/GameContext'
 import { useEffect } from "react";
 import { io } from "socket.io-client"
 import { logout } from './helper/helper';
+import { UserProvider } from './context/UserContext';
 
 function App() {
   // useEffect(() => {
@@ -40,6 +41,7 @@ function App() {
   // }, []);
   return (
     <>
+      <UserProvider>
       <GameProvider>
         <Router>
           <Routes>
@@ -56,6 +58,7 @@ function App() {
           </Routes>
         </Router>
       </GameProvider>
+      </UserProvider>
     </>
   );
 }
