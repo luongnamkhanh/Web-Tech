@@ -13,8 +13,12 @@ function GameMenu() {
         Start A New Game
       </Link>
       <br />
-      <Link className="highScore button animate__animated animate__fadeIn animate__delay-1s element-title" to="/highScores">
+      <Link className="highScore button animate__animated animate__fadeIn animate__delay-1s element-title" to="/highscores">
         High Scores
+      </Link>
+      <br />
+      <Link className="promotionSeries button animate__animated animate__fadeIn animate__delay-1s element-title" to="/promotionseries">
+        Enter Promotion Series
       </Link>
     </div>
   );

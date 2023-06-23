@@ -1,4 +1,4 @@
-import './mainMenu.css'
+import './MainMenu.css'
 import { PlayOnlineButton, PlayWithBotButton, PlayWithFreindButton } from "../GameMenuButton/GameMenuButton";
 
 function MainMenu(){

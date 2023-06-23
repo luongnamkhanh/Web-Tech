@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import avatar from '../assets/profile.png';
 import toast, { Toaster } from 'react-hot-toast';
 import { useFormik } from 'formik';
 import { profileValidation } from '../helper/validate';
@@ -12,7 +11,7 @@ import styles from '../styles/Username.module.css';
 import extend from '../styles/Profile.module.css'
 
 export default function Profile() {
-
+  const avatar = './Images/profile.png'
   const [file, setFile] = useState();
   const [{ isLoading, apiData, serverError }] = useFetch();
   console.log(apiData);

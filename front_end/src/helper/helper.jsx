@@ -16,6 +16,13 @@ export async function getUsername() {
     return decode;
 }
 
+export function getUsernameSync() {
+    const token = localStorage.getItem('token')
+    if (!token) return null;
+    let decode = jwt_decode(token)
+    return decode;
+}
+
 /** authenticate function */
 export async function authenticate(username) {
     try {
@@ -26,7 +33,7 @@ export async function authenticate(username) {
 }
 
 /** get User details */
-export async function getUser({ username }) {
+export async function getUser(username) {
     try {
         const { data } = await axios.get(`/api/user/${username}`);
         return { data };
@@ -113,6 +120,22 @@ export async function resetPassword({ username, password }) {
         return Promise.resolve({ data, status })
     } catch (error) {
         return Promise.reject({ error })
+    }
+}
+
+// update rank
+
+export async function updatePlayerRank(username, won) {
+    console.log("username", username)
+    console.log("won", won)
+    try {
+        const response = await axios.put('/api/updateRank', {
+            username: username,
+            won: won,
+        });
+        console.log(response);
+    } catch (error) {
+        console.error(error);
     }
 }
 

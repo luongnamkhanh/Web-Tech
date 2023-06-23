@@ -11,25 +11,28 @@
   .menu-game h1 {
     color: #ffffff;
     text-align: center;
-    margin-top: -30px;
+    margin-top: 400px;
     text-shadow: 4px 4px 10px rgba(0, 0, 0, 0.7);
   }
   
   .chess-title {
-    font-family: 'Cinzel', serif;
+    font-family: 'Imperator Caps', serif;
     font-size: 120px;
-    margin: 0px 0px 80px -10px;
+    margin-left: -10px;
   }
   
   .element-title {
     font-family: 'Fauna One', serif;
     font-size: 30px;
     position: relative;
-    overflow: hidden;
+    /* overflow: hidden; */
     transition: all 0.3s ease;
     background-color: transparent;
     border: none;
+
     color: #769656;
+
+
     padding: 0px 15px 0px 0px;
   }
   
