@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const ENV = require('../config.js');
 const otpGenerator = require('otp-generator');
+const userService = require('../services/userService');
 
 
 /** middleware for verify user */
@@ -294,3 +295,67 @@ exports.logout = async (req, res) => {
             return res.status(500).send({ error: "Failed to update user" });
         });
 };
+
+exports.getUsersByRank = async (req, res) => {
+    const { rank } = req.query;
+    try {
+        const users = await User.find({rank: rank}).exec();
+
+        let resp = users.map((user) => user.toObject()).map(({ password, ...rest}) => rest)
+        resp.sort((a,b) => (a.points < b.points ? 1 : ((a.points == b.points) ? 0 : -1)));
+        resp = resp.slice(0, 5);
+        return res.status(200).json({
+            data: resp
+        });
+    } catch (error) {
+        return res.status(500).json({ error: "Internal server error" });
+    }
+}
+
+exports.updateRank = function(req, res) {
+
+    const username = req.body.username;
+    const won = req.body.won;
+    return User.findOne({ username }).then(user => {
+        user.games_played++;
+
+        if(won) {
+            user.points++;
+            user.games_won++;
+            if(user.points >= 10) {
+                if(user.in_promotion_series) {
+                    user.promotion_series_won++;
+                    if(user.promotion_series_won >= 3) {
+                        if(user.rank === 'Bronze') user.rank = 'Silver';
+                        else if(user.rank === 'Silver') user.rank = 'Gold';
+                        user.points = 0;
+                        user.promotion_series_won = 0;
+                        user.in_promotion_series = false;
+                    }
+                }
+            }
+        } else {
+            user.games_lost++;
+            if(user.in_promotion_series) {
+                user.points = Math.max(0, user.points - 5);
+                user.promotion_series_won = 0;
+                user.in_promotion_series = false;
+            } else {
+                user.points = Math.max(0, user.points - 1);
+            }
+        }
+
+        return user.save()
+        .then(() => res.status(200).json({ message: "User rank updated successfully" }))
+        .catch((error) => res.status(500).json({ error: "Failed to update user rank" }));
+    })
+    .catch((error) => {console.log(error); res.status(500).json({ error: "Internal server error" })});
+};
+
+exports.enterPromotionSeries = function (req, res) {
+    const username = req.body.username;
+    userService.enterPromotionSeries(username)
+        .then(() => res.status(200).json({ message: 'User has entered promotion series' }))
+        .catch(err => res.status(500).json({ error: err.message }));
+
+}
