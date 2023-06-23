@@ -98,7 +98,7 @@ export default function Profile() {
                 <div className="name flex w-3/4 gap-10">
                 <br></br>
                   Point:
-                <div className={`${styles.textbox} ${extend.textbox}`} type="text" placeholder='Email*' > {apiData?.point}</div>
+                <div className={`${styles.textbox} ${extend.textbox}`} type="text" placeholder='Email*' > {apiData?.points}</div>
                 </div>
 
                   
