@@ -15,6 +15,9 @@
 .textbox{
     @apply border-0 px-5 py-4 rounded-xl w-3/4 shadow-sm text-lg;
     @apply focus:outline-none;
+    background-color: whitesmoke !important;
+    overflow-wrap: break-word;width: fit-content;
+    block-size: fit-content;
 }
 
 .btn{

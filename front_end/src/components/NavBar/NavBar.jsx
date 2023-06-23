@@ -22,6 +22,14 @@ const settings = ['Profile', 'Logout'];
 const style = {
   background : '#769656'
 };
+import { makeStyles } from '@mui/styles';
+
+const useStyles = makeStyles(() => ({
+  root: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+}));
 
 function ResponsiveAppBar() {
   const avatar = './Images/profile.png'
@@ -59,10 +67,13 @@ function ResponsiveAppBar() {
         window.location.href = '/';
       }
     } 
+    if (setting === 'Profile') {
+      navigate('/profile');
+    }
   };
-
+  const classes = useStyles();
   return (
-    <AppBar position="static" sx={style}>
+    <AppBar position="static" sx={{ ...style, ...classes.root }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
