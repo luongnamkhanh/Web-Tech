@@ -38,15 +38,12 @@ function GameProvider( {children} ){
 
     getOpponentData().then((res) =>{
       setOpponentAPIData(res);
-      console.log(res.username);
     });
     
   }, [opponentName]);
 
   useEffect(() => {
     socket = io(ENDPOINT);
-
-    console.log('assigned to socket');
 
     socket.on('startGame', (side) =>{ 
       console.log('startGame signal received, starting game'); 
@@ -92,7 +89,6 @@ function GameProvider( {children} ){
 
   function movePiece(coordinate){
     try{
-      console.log(`Started: ${isStarted}`);
       gameState.move(selected, coordinate);
       socket.emit('move', roomID, selected, coordinate);
       setSelected('');
@@ -153,7 +149,6 @@ function GameProvider( {children} ){
   }
 
   function resign(){
-    console.log(isStarted);
     setIsOver(true);
     setIsWinner(false);
     socket.emit('resign', roomID);
@@ -161,7 +156,6 @@ function GameProvider( {children} ){
 
   function opponentResign(){
     setIsStarted((preState) =>{
-      console.log(preState);
       setIsOver(true);
       setIsWinner(true);
       return preState;
@@ -189,7 +183,6 @@ function GameProvider( {children} ){
     setIsStarted(false);
     setIsWinner(null);
     
-    console.log(isBotGame);
     if (!isBotGame){
       socket.emit('leaveRoom', roomID);
       leaveRoom();

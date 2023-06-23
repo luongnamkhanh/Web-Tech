@@ -1,6 +1,5 @@
 import "./PlayerInfoBar.css"
 import React, { useContext, useState } from 'react'
-import avatar from '../../assets/profile.png';
 import toast, { Toaster } from 'react-hot-toast';
 import convertToBase64 from '../../helper/convert';
 import useFetch from '../../hooks/fetch.hook';
