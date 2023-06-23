@@ -33,7 +33,7 @@ export async function authenticate(username) {
 }
 
 /** get User details */
-export async function getUser({ username }) {
+export async function getUser(username) {
     try {
         const { data } = await axios.get(`/api/user/${username}`);
         return { data };

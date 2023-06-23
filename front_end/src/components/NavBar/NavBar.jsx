@@ -13,7 +13,6 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { useNavigate } from 'react-router-dom';
-import avatar from '../../assets/profile.png';
 import { UserContext } from '../../context/UserContext';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
@@ -25,6 +24,7 @@ const style = {
 };
 
 function ResponsiveAppBar() {
+  const avatar = './Images/profile.png'
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const navigate = useNavigate();
@@ -56,7 +56,7 @@ function ResponsiveAppBar() {
           console.log('Logout request failed:', error);
         }
         localStorage.removeItem('token');
-        navigate('/');
+        window.location.href = '/';
       }
     } 
   };
@@ -69,8 +69,8 @@ function ResponsiveAppBar() {
           <Typography
             variant="h6"
             noWrap
-            component={Link}
-            to="/homepage"
+            component="a"
+            href="/homepage"
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
