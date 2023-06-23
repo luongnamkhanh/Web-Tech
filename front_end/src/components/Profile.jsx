@@ -19,13 +19,13 @@ export default function Profile() {
   const navigate = useNavigate()
  
   const formik = useFormik({
-    // initialValues : {
-    //   firstName : apiData?.firstName || '',
-    //   lastName: apiData?.lastName || '',
-    //   email: apiData?.email || '',
-    //   mobile: apiData?.mobile || '',
-    //   address : apiData?.address || ''
-    // },
+    initialValues : {
+      username : apiData?.username || '',
+      lastName: apiData?.lastName || '',
+      email: apiData?.email || '',
+      mobile: apiData?.mobile || '',
+      address : apiData?.address || ''
+    },
     enableReinitialize: true,
     validate : profileValidation,
     validateOnBlur: false,
@@ -68,9 +68,6 @@ export default function Profile() {
 
           <div className="title flex flex-col items-center">
             <h4 className='text-5xl font-bold'>Profile</h4>
-            <span className='py-4 text-xl w-2/3 text-center text-gray-500'>
-                You can update the details.
-            </span>
           </div>
 
           <form className='py-1' onSubmit={formik.handleSubmit}>
@@ -84,18 +81,17 @@ export default function Profile() {
 
               <div className="textbox flex flex-col items-center gap-6">
                 <div className="name flex w-3/4 gap-10">
-                  <input {...formik.getFieldProps('firstName')} className={`${styles.textbox} ${extend.textbox}`} type="text" placeholder='FirstName' />
+                  <br></br>
+                  Username: 
+                  <input {...formik.getFieldProps('username')} className={`${styles.textbox} ${extend.textbox}`} type="text" placeholder='FirstName' />
                   <input {...formik.getFieldProps('lastName')} className={`${styles.textbox} ${extend.textbox}`} type="text" placeholder='LastName' />
                 </div>
                 <input {...formik.getFieldProps('email')} className={`${styles.textbox} ${extend.textbox}`} type="text" placeholder='Email*' />
-                  <button className={styles.btn} type='submit'>Update</button>
                
                   
               </div>
 
-              <div className="text-center py-4">
-                <span className='text-gray-500'>come back later? <button onClick={userLogout} className='text-red-500' to="/">Logout</button></span>
-              </div>
+              
 
           </form>
 
