@@ -20,6 +20,33 @@ The system will use a PostgreSQL database to handle player information, game inf
 [!Demo]
 
 ## Project Structure
+├── back_end/
+│   └── src/
+│       ├── Controller
+│       ├── Model
+│       ├── routes
+│       ├── DBconnection
+│       ├── middleware
+│       ├── app.js
+│       ├── config.js
+│       └── SocketGameLogic.js
+└── front_end/
+    ├── public
+    ├── src/
+    │   ├── assets
+    │   ├── components
+    │   ├── context
+    │   ├── helper
+    │   ├── hooks
+    │   ├── Pages
+    │   ├── store
+    │   ├── styles
+    │   ├── App.jsx
+    │   ├── index.css
+    │   └── main.jsx
+    ├── .env
+    └── index.html
+
 
 ## Entity Relationship Diagram
 
