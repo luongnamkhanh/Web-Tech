@@ -53,10 +53,13 @@ function GameProvider({ children }) {
       startGame(true, side); 
     });
 
-    socket.on('opponentMove', (to, from, oppoID) => {
-      console.log(`opo moves ${to} ${from}`)
+    socket.on('opponentMove', (from, to, oppoID) => {
+      console.log(`opo moves ${from} ${to}`)
       console.log(`received move from ${oppoID}`);
-      gameState.move(to, from);
+      setGameState((prev) => {
+        prev.move(from, to);
+        return prev;
+      })
       updateMoveList();
     });
 

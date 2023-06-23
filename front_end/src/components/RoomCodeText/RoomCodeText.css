@@ -1,3 +1,8 @@
+.room-container{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
 .room-heading {
     font-size: 2em;
     margin: 0;
