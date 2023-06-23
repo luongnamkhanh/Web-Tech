@@ -64,7 +64,7 @@ export default function Profile() {
       <Toaster position='top-center' reverseOrder={false}></Toaster>
 
       <div className='flex justify-center items-center h-screen'>
-        <div className={`${styles.glass} ${extend.glass}`} style={{ width: "45%", paddingTop: '3em'}}>
+        <div className={`${styles.glass} ${extend.glass}`} style={{ width: "120%", paddingTop: '3em'}}>
 
           <div className="title flex flex-col items-center">
             <h4 className='text-5xl font-bold'>Profile</h4>
@@ -83,11 +83,25 @@ export default function Profile() {
                 <div className="name flex w-3/4 gap-10">
                   <br></br>
                   Username: 
-                  <input {...formik.getFieldProps('username')} className={`${styles.textbox} ${extend.textbox}`} type="text" placeholder='FirstName' />
-                  <input {...formik.getFieldProps('lastName')} className={`${styles.textbox} ${extend.textbox}`} type="text" placeholder='LastName' />
+                  <div  className={`${styles.textbox} ${extend.textbox}`} type="text" placeholder='FirstName' > {apiData?.username}</div>
+                
                 </div>
-                <input {...formik.getFieldProps('email')} className={`${styles.textbox} ${extend.textbox}`} type="text" placeholder='Email*' />
-               
+                <div className="name flex w-3/4 gap-10">
+                <br></br>
+                  Email:
+                <div className={`${styles.textbox} ${extend.textbox}`} type="text" placeholder='Email*' > {apiData?.email}</div>
+                </div>
+                <div className="name flex w-3/4 gap-10">
+                <br></br>
+                  Rank:
+                <div className={`${styles.textbox} ${extend.textbox}`} type="text" placeholder='Email*' > {apiData?.rank}</div>
+                </div>
+                <div className="name flex w-3/4 gap-10">
+                <br></br>
+                  Point:
+                <div className={`${styles.textbox} ${extend.textbox}`} type="text" placeholder='Email*' > {apiData?.point}</div>
+                </div>
+
                   
               </div>
 
