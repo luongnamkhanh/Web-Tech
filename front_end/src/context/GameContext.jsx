@@ -3,13 +3,15 @@ import { Game, move, status, moves, aiMove, getFen } from 'js-chess-engine'
 import { io } from 'socket.io-client'
 import { getUser } from '../helper/helper';
 import { UserContext } from './UserContext';
+import { updatePlayerRank, getUsernameSync } from '../helper/helper.jsx';
+
 
 const GameContext = createContext();
 const ENDPOINT = 'http://localhost:8080';
 let socket;
 
-function GameProvider( {children} ){
-  const [gameState, setGameState] = useState(() => {return new Game()});
+function GameProvider({ children }) {
+  const [gameState, setGameState] = useState(() => { return new Game() });
   const [availableMoves, setAvailableMoves] = useState([]);
   const [selected, setSelected] = useState('');
   const [moveList, setMoveList] = useState(null);
@@ -25,6 +27,8 @@ function GameProvider( {children} ){
   const [isWinner, setIsWinner] = useState(null);
   const [opponentName, setOpponentName] = useState(null);
   const { setOpponentAPIData } = useContext(UserContext);
+  const username = getUsernameSync()?.username
+
 
   useEffect(() => {
     updateMoveList();
@@ -44,15 +48,15 @@ function GameProvider( {children} ){
 
   useEffect(() => {
     socket = io(ENDPOINT);
-
     socket.on('startGame', (side) =>{ 
       console.log('startGame signal received, starting game'); 
       startGame(true, side); 
     });
 
-    socket.on('opponentMove', (to, from, oppoID) => { 
-      console.log(`received move from ${oppoID}`); 
-      gameState.move(to, from); 
+    socket.on('opponentMove', (to, from, oppoID) => {
+      console.log(`opo moves ${to} ${from}`)
+      console.log(`received move from ${oppoID}`);
+      gameState.move(to, from);
       updateMoveList();
     });
 
@@ -63,6 +67,7 @@ function GameProvider( {children} ){
     socket.on('leaveRoom', opponentLeaveRoom);
   }, []);
 
+
   function handleJoinRoom(numberOfPlayer, playerName){
     if (numberOfPlayer < 2){
       setIsInRoom(true);
@@ -70,7 +75,7 @@ function GameProvider( {children} ){
         setIsRoomFull(true);
         setOpponentName(playerName);
       }
-    }else
+    } else
       setIsRoomFull(true);
   }
 
@@ -79,7 +84,7 @@ function GameProvider( {children} ){
       if (gameState.exportJson().turn === playerSide){
         if (selected != '') //A tile is being selected, proceed to move piece or select an other tile
           movePiece(coordinate)
-        else{               // No tile is beling selected, proceed to select a tile
+        else {               // No tile is beling selected, proceed to select a tile
           setAvailableMoves(gameState.moves(coordinate));
           setSelected(coordinate);
         }
@@ -94,95 +99,102 @@ function GameProvider( {children} ){
       setSelected('');
       setAvailableMoves([]);
       updateMoveList();
-      if (!isGameOver()){
-        if (isBotGame){
+      if (!isGameOver()) {
+        if (isBotGame) {
           AIMove();
         }
       };
     }
-    catch(err){
+    catch (err) {
       setAvailableMoves(gameState.moves(coordinate));
       setSelected(coordinate);
     }
   }
 
-  function AIMove(){
+  function AIMove() {
     setTimeout(() => {
       console.log('AI turn');
       gameState.aiMove(difficulty);
       updateMoveList();
-  }, 0);
+    }, 0);
   }
 
-  function isGameOver(){
-    if (gameState.exportJson().isFinished){
+  function isGameOver() {
+    if (gameState.exportJson().isFinished) {
       console.log('Game over');
       setIsOver(true);
-      if (gameState.exportJson().turn === playerSide)
+      if (gameState.exportJson().turn === playerSide) {
         setIsWinner(true);
-      else
+        updatePlayerRank(username, true);
+      }
+      else {
         setIsWinner(false);
-      return true;  
+        updatePlayerRank(username, false);
+      }
+      return true;
     }
     return false;
   }
 
-  function updateMoveList(){
-    setMoveList(gameState.getHistory().map(a => {return {from: a.from, to: a.to}}));
+  function updateMoveList() {
+    setMoveList(gameState.getHistory().map(a => { return { from: a.from, to: a.to } }));
   }
 
-  function startGame(isSignal = false, side = 'white'){
-    if (isBotGame){
+  function startGame(isSignal = false, side = 'white') {
+    if (isBotGame) {
       setPlayerSide(side);
       setIsStarted(true);
     }
-    if (!isBotGame){
-      if (!isSignal){
+    if (!isBotGame) {
+      if (!isSignal) {
         socket.emit('startGame', roomID);
         console.log(`${socket.id} send start signal`);
       }
-      else{
+      else {
         setPlayerSide(side);
         setIsStarted(true);
       }
     }
   }
 
-  function resign(){
+
+  function resign() {
     setIsOver(true);
     setIsWinner(false);
     socket.emit('resign', roomID);
+    updatePlayerRank(username, false);
   }
 
   function opponentResign(){
     setIsStarted((preState) =>{
       setIsOver(true);
       setIsWinner(true);
+      updatePlayerRank(username, true);
       return preState;
     })
   }
 
-  function setGameDifficulty(newDifficulty){
+  function setGameDifficulty(newDifficulty) {
     setDifficulty(newDifficulty);
     console.log(`Change difficulty to ${newDifficulty}`)
   }
 
-  function changeMenu(newMenu){
+  function changeMenu(newMenu) {
     setMenu(newMenu);
     console.log(`Menu changed to: ${newMenu}`)
   }
 
-  function setBotGame(){
+  function setBotGame() {
     setIsBotGame(true);
     console.log('This is a bot game');
   }
 
-  function newGame(){
-    setGameState(() => {return new Game()});
+  function newGame() {
+    setGameState(() => { return new Game() });
     setIsOver(false);
     setIsStarted(false);
     setIsWinner(null);
-    
+
     if (!isBotGame){
       socket.emit('leaveRoom', roomID);
       leaveRoom();
@@ -211,4 +223,4 @@ function GameProvider( {children} ){
   )
 }
 
-export {GameContext, GameProvider, socket}
+export { GameContext, GameProvider, socket }
