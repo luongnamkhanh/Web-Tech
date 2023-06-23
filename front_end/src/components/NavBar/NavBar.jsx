@@ -13,7 +13,6 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { useNavigate } from 'react-router-dom';
-import avatar from '../../assets/profile.png';
 import { UserContext } from '../../context/UserContext';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
@@ -23,8 +22,17 @@ const settings = ['Profile', 'Logout'];
 const style = {
   background : '#769656'
 };
+import { makeStyles } from '@mui/styles';
+
+const useStyles = makeStyles(() => ({
+  root: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+}));
 
 function ResponsiveAppBar() {
+  const avatar = './Images/profile.png'
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const navigate = useNavigate();
@@ -56,21 +64,24 @@ function ResponsiveAppBar() {
           console.log('Logout request failed:', error);
         }
         localStorage.removeItem('token');
-        navigate('/');
+        window.location.href = '/';
       }
     } 
+    if (setting === 'Profile') {
+      navigate('/profile');
+    }
   };
-
+  const classes = useStyles();
   return (
-    <AppBar position="static" sx={style}>
+    <AppBar position="static" sx={{ ...style, ...classes.root }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
           <Typography
             variant="h6"
             noWrap
-            component={Link}
-            to="/homepage"
+            component="a"
+            href="/homepage"
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },

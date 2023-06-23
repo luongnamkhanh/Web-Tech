@@ -1,5 +1,5 @@
-let listOfPlayer = [];
-let roomManager = [];
+let listOfPlayer = {};
+let roomManager = {};
 
 const initializeGame = (io, socket) =>{
   //Add player to list
@@ -55,11 +55,12 @@ function playerJoinRoom(roomID, socket, io){
   const numberOfPlayer = room ? room.size : 0;
   if (numberOfPlayer < 2){
     socket.join(roomID);
+    socket.emit('join', numberOfPlayer, findPropertyByValue(listOfPlayer, findPropertyByValue(roomManager, roomID)));
     roomManager[socket.id] = roomID;
     console.log(`Joined room ${roomID} with ${numberOfPlayer} player`);
-    socket.emit('join', numberOfPlayer);
     if (numberOfPlayer == 1){
-      socket.to(roomID).emit('join', numberOfPlayer);
+      socket.to(roomID).emit('join', numberOfPlayer, findPropertyByValue(listOfPlayer, socket.id));
+      console.log(findPropertyByValue(listOfPlayer, socket.id));
     }
   }
   else{
@@ -85,14 +86,6 @@ function playerInvite(playerUsername, friendUsername, socket){
   socket.to(listOfPlayer[friendUsername]).emit('invite', playerUsername);
 }
 
-function getRandomSide() {
-  if (Math.floor(Math.random() * 2) == 0) {
-      return ['black', 'white'];
-  } else {
-      return ['white', 'black'];
-  }
-}
-
 function opponentResign(roomID, socket){
   socket.to(roomID).emit('resign');
 }
@@ -104,5 +97,21 @@ function playerLeaveRoom(roomID, socket){
   roomManager[socket.id] = '';
 }
 
+function findPropertyByValue(obj, value) {
+  for (let key in obj) {
+    if (obj.hasOwnProperty(key) && obj[key] === value) {
+      return key;
+    }
+  }
+  
+  return null; // Return null if the value is not found
+}
 
+function getRandomSide() {
+  if (Math.floor(Math.random() * 2) == 0) {
+      return ['black', 'white'];
+  } else {
+      return ['white', 'black'];
+  }
+}
 exports.initializeGame = initializeGame

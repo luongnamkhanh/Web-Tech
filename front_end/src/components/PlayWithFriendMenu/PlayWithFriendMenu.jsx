@@ -9,8 +9,7 @@ function PlayWithFriendMenu(){
   return(
     <>
       { !isInRoom && <RoomCodeField/>}
-      { isInRoom && !isRoomFull && <RoomCodeText/>}
-      { isInRoom && isRoomFull && <StartGameButton/>}
+      { isInRoom && <RoomCodeText/>}
     </>
   )
 }

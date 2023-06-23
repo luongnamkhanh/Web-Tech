@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { GameContext } from "../../context/GameContext";
 
+
 function ResignButtom(){
   const { resign } = useContext(GameContext);
   return(

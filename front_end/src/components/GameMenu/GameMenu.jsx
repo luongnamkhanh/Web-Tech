@@ -5,7 +5,18 @@ import './GameMenu.css';
 function GameMenu() {
   return (
     <div className="menu-game">
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
       <h1 className="animate__animated animate__fadeIn chess-title">Chess</h1>
+      <br />
+      <br />
+      <br />
       <Link className="startGame button animate__animated animate__fadeIn animate__delay-1s element-title" to={`/game`}>
         Start A New Game
       </Link>
