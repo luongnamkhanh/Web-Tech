@@ -12,6 +12,7 @@ import { GameProvider } from './context/GameContext'
 import { useEffect } from "react";
 import { io } from "socket.io-client"
 import { logout } from './helper/helper';
+import { UserProvider } from './context/UserContext';
 import axios from 'axios';
 
 function App() {
@@ -27,17 +28,18 @@ function App() {
       } catch (error) {
         console.log('Logout request failed:', error);
       }
-      console.log('beforeunload event triggered');
+      console.log('unload event triggered');
     };
 
-    window.addEventListener('beforeunload', handleTabClose);
+    window.addEventListener('unload', handleTabClose);
 
     return () => {
-      window.removeEventListener('beforeunload', handleTabClose);
+      window.removeEventListener('unload', handleTabClose);
     };
   }, []);
   return (
     <>
+      <UserProvider>
       <GameProvider>
         <Router>
           <Routes>
@@ -54,6 +56,7 @@ function App() {
           </Routes>
         </Router>
       </GameProvider>
+      </UserProvider>
     </>
   );
 }
