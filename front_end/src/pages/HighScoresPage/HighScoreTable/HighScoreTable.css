@@ -32,7 +32,7 @@ td {
     font-size: 1em;
     font-weight: 500;
     font-family: inherit;
-    background-color: #a1a1a1 !important;
+    background-color: #494c54 !important;
     cursor: pointer;
     transition: border-color 0.25s;
     transition-duration: 0.25s;
@@ -43,6 +43,6 @@ td {
 }
 
 .active{
-    border-radius: 8px;
-    border: 5px solid #3f3f3f;
+    border-radius: 5px;
+    border: 4px solid #3f836e !important;   
 }
