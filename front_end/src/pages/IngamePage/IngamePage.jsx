@@ -15,9 +15,10 @@ import StartGameButton from "../../components/StartGameButton/StartGameButton";
 import { useEffect } from "react";
 import { UserContext } from "../../context/UserContext";
 import useFetch from "../../hooks/fetch.hook";
+import StartMatchmakingButton from "../../components/StartMatchmakingButton/StartMatchmakingButton";
 
 function IngamePage() {
-  const { isStarted, isOver, menu } = useContext(GameContext)
+  const { isStarted, isOver, menu, isMatchmaking } = useContext(GameContext)
   const [{ apiData }] = useFetch();
   const { setUserApiData } = useContext(UserContext);
 
@@ -39,9 +40,15 @@ function IngamePage() {
         {!isStarted && menu === 1 && <PlayWithBotMenu />}
         {!isStarted && menu === 3 && <PlayWithFriendMenu />}
         {
-          !isStarted && menu === 2 &&
+          !isStarted && menu === 2 && !isMatchmaking &&
           <>
-            <StartGameButton/>
+            <StartMatchmakingButton/>
+          </>
+        }
+        {
+          !isStarted && menu === 2 && isMatchmaking &&
+          <>
+            Finding match...
           </>
         }
 

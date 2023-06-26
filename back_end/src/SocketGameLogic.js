@@ -1,5 +1,7 @@
 let listOfPlayer = {};
 let roomManager = {};
+let playerQueue = [];
+
 
 const initializeGame = (io, socket) =>{
   //Add player to list
@@ -25,6 +27,49 @@ const initializeGame = (io, socket) =>{
 
   //Player leave room
   socket.on('leaveRoom', (roomID) => playerLeaveRoom(roomID, socket));
+
+  socket.on('matchMaking', () => addMatchMakingRequest(socket));
+}
+
+function addMatchMakingRequest(socket) {
+  playerQueue.push(socket);
+  console.log(`Matchmaking request added for socket ${socket.id}`);
+  if (playerQueue.length >= 2) {
+    const player1 = playerQueue.shift();
+    const player2 = playerQueue.shift();
+    createRoom(player1, player2);
+  }
+}
+
+function createRoom(player1, player2) {
+  const roomID = generateRoomID(); // Generate a unique room ID
+  player1.join(roomID);
+  player2.join(roomID);
+  roomManager[player1.id] = roomID;
+  roomManager[player2.id] = roomID;
+  console.log(`Room ${roomID} created with players ${player1.id} and ${player2.id}`);
+
+  // Notify players about joining the room
+  player1.emit('joinMatchmaking', (roomID));
+  player2.emit('joinMatchmaking', (roomID));
+  player1.emit('join', 2, findPropertyByValue(listOfPlayer, player2.id));
+  player2.emit('join', 2, findPropertyByValue(listOfPlayer, player1.id));
+
+  // Start the game
+  const randomSides = getRandomSide();
+  player1.emit('startGame', randomSides[0]);
+  player2.emit('startGame', randomSides[1]);
+ 
+}
+
+function generateRoomID() {
+  // Generate a random alphanumeric room ID
+  const characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  let roomID = '';
+  for (let i = 0; i < 6; i++) {
+    roomID += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+  return roomID;
 }
 
 function playerInit(newPlayer, socket){
@@ -46,6 +91,7 @@ function playerDisconnect(socket){
       delete listOfPlayer[name];
       break;
     }
+    playerQueue = playerQueue.filter((player) => player != socket.id);
   console.log(listOfPlayer);
 
 }
