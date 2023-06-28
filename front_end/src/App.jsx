@@ -3,6 +3,7 @@ import LoginPage from './pages/LoginPage';
 import Layout from './components/Layout';
 import RecoverPasswordPage from './pages/RecoverPasswordPage';
 import Resister from './pages/Resister';
+import ResetPage from './pages/ResetPage';
 import ProfilePage from './pages/ProfilePage';
 import UsernamePage from './pages/UsernamePage';
 import HomePage from './pages/HomePage/HomePage'
@@ -47,6 +48,7 @@ function App() {
               <Route index element={<LoginPage />} />
               <Route path="homepage" element={<HomePage />} />
               <Route path="recovery" element={<RecoverPasswordPage />} />
+              <Route path="reset" element={<ResetPage/>} />
               <Route path="register" element={<Resister />} />
               <Route path="profile" element={<ProfilePage />} />
               <Route path="username" element={<UsernamePage />} />

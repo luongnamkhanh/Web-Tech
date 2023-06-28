@@ -33,7 +33,7 @@ export default function Register() {
         error : <b>Could not Register.</b>
       });
 
-      registerPromise.then(function(){ navigate('/login')});
+      registerPromise.then(function(){ navigate('/')});
     }
   })
 
