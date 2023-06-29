@@ -4,7 +4,7 @@ import { io } from 'socket.io-client'
 import { getUser } from '../helper/helper';
 import { UserContext } from './UserContext';
 import { updatePlayerRank, getUsernameSync } from '../helper/helper.jsx';
-
+import { cloneDeep } from 'lodash';
 
 const GameContext = createContext();
 const ENDPOINT = 'http://localhost:8080';
@@ -32,6 +32,7 @@ function GameProvider({ children }) {
 
   useEffect(() => {
     updateMoveList();
+    console.log("Updated move list");
   }, [gameState]);
 
   useEffect(() =>{
@@ -58,9 +59,9 @@ function GameProvider({ children }) {
       console.log(`received move from ${oppoID}`);
       setGameState((prev) => {
         prev.move(from, to);
-        return prev;
+        const newGameState = cloneDeep(prev);
+        return newGameState;
       })
-      updateMoveList();
     });
 
     socket.on('join', handleJoinRoom);
