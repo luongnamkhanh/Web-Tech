@@ -300,10 +300,8 @@ exports.getUsersByRank = async (req, res) => {
     const { rank } = req.query;
     try {
         const users = await User.find({rank: rank}).exec();
-
-        let resp = users.map((user) => user.toObject()).map(({ password, ...rest}) => rest)
+        let resp = users.map((user) => user.toObject()).map(({ password, ...rest}) => rest);
         resp.sort((a,b) => (a.points < b.points ? 1 : ((a.points == b.points) ? 0 : -1)));
-        resp = resp.slice(0, 5);
         return res.status(200).json({
             data: resp
         });
