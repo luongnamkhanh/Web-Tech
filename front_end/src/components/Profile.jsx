@@ -47,7 +47,16 @@ export default function Profile() {
     const base64 = await convertToBase64(e.target.files[0]);
     setFile(base64);
   }
-
+  var rank = ''
+  if (apiData?.rank == 'Bronze') {
+    rank = './bronze.png'
+  }
+  else if (apiData?.rank == 'Silver') {
+    rank = './silver.png'
+  }
+  else if (apiData?.rank == 'Gold') {
+    rank = './gold.png'
+  }
 
   //   if(isLoading) return <h1 className='text-2xl font-bold'>isLoading</h1>;
   //   if(serverError) return <h1 className='text-xl text-red-500'>{serverError.message}</h1>
@@ -88,7 +97,7 @@ export default function Profile() {
                 <div className="name flex w-3/4 gap-10">
                   <br></br>
                   Rank:
-                  <div className={`${styles.textbox} ${extend.textbox}`}  > {apiData?.rank}</div>
+                  <img src={ rank } style={{ width: "6%"}} alt="" />
                 </div>
                 <div className="name flex w-3/4 gap-10">
                   <br></br>
