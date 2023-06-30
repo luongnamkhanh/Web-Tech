@@ -12,13 +12,14 @@ import styles from '../styles/Username.module.css';
 export default function Reset() {
 
   const { username } = useAuthStore(state => state.auth);
+  console.log(username);
   const navigate = useNavigate();
   const [{ isLoading, apiData, status, serverError }] = useFetch('createResetSession')
 
   const formik = useFormik({
     initialValues : {
-      password : 'admin@123',
-      confirm_pwd: 'admin@123'
+      password : '',
+      confirm_pwd: ''
     },
     validate : resetPasswordValidation,
     validateOnBlur: false,
@@ -33,7 +34,7 @@ export default function Reset() {
         error : <b>Could not Reset!</b>
       });
 
-      resetPromise.then(function(){ navigate('/password') })
+      resetPromise.then(function(){ navigate('/') })
 
     }
   })
