@@ -7,13 +7,13 @@ Players can sign up and log in to the game and then send challenge invitations t
 
 The system will use a PostgreSQL database to handle player information, game information, and rankings. The system will be built with Node.js for the backend, Socket.io for real-time communication between players, and React for the frontend. In the future, the system will have features such as handling multiple matches at the same time, a chat system, finding random matches, and a training room to practice against an AI bot. 
 ## Technology Stack
-* **Frontend:** []
-* **Backend:** []
-* **Database:** [PostgreSQL]
+* **Frontend:** [React-Vite]
+* **Backend:** [Node-Express.js]
+* **Database:** [MongoDB]
 
 ## Requirements
 * [Visual Studio Code](https://code.visualstudio.com/)
-* [PgAdmin](https://www.pgadmin.org/download/)
+* [MongoDB]
 
 ## Website Preview
 ### Player Portal Preview
