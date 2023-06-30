@@ -300,10 +300,8 @@ exports.getUsersByRank = async (req, res) => {
     const { rank } = req.query;
     try {
         const users = await User.find({rank: rank}).exec();
-
-        let resp = users.map((user) => user.toObject()).map(({ password, ...rest}) => rest)
+        let resp = users.map((user) => user.toObject()).map(({ password, ...rest}) => rest);
         resp.sort((a,b) => (a.points < b.points ? 1 : ((a.points == b.points) ? 0 : -1)));
-        resp = resp.slice(0, 5);
         return res.status(200).json({
             data: resp
         });
@@ -352,10 +350,9 @@ exports.updateRank = function(req, res) {
     .catch((error) => {console.log(error); res.status(500).json({ error: "Internal server error" })});
 };
 
-exports.enterPromotionSeries = function (req, res) {
+exports.enterPromotionSeries = function async (req, res) {
     const username = req.body.username;
     userService.enterPromotionSeries(username)
         .then(() => res.status(200).json({ message: 'User has entered promotion series' }))
-        .catch(err => res.status(500).json({ error: err.message }));
-
+        .catch(err => res.status(400).json({ error: err.message }));
 }

@@ -27,6 +27,7 @@ function GameProvider({ children }) {
   const [isWinner, setIsWinner] = useState(null);
   const [opponentName, setOpponentName] = useState(null);
   const { setOpponentAPIData } = useContext(UserContext);
+  const [isMatchmaking, setIsMatchmaking] = useState(false);
   const username = getUsernameSync()?.username
 
 
@@ -69,8 +70,22 @@ function GameProvider({ children }) {
     socket.on('resign', opponentResign);
 
     socket.on('leaveRoom', opponentLeaveRoom);
+
+    // Matchmaking success event
+    socket.on('joinMatchmaking', (roomID) => {
+      console.log(`Joined matchmaking with room ID: ${roomID}`);
+      setRoomID(roomID);
+      setIsInRoom(true);
+      setIsRoomFull(false);
+      setIsMatchmaking(false);
+    });
+
   }, []);
 
+  function startMatchmaking() {
+    setIsMatchmaking(true);
+    socket.emit('matchMaking');
+  }
 
   function handleJoinRoom(numberOfPlayer, playerName){
     if (numberOfPlayer < 2){
@@ -221,7 +236,7 @@ function GameProvider({ children }) {
   }
 
   return(
-    <GameContext.Provider value={{gameState, availableMoves, selected, selectTile, moveList, isOver, startGame, isStarted, resign, changeMenu, menu, difficulty, setGameDifficulty, setBotGame, newGame, setPlayerSide, roomID, setRoomID, isInRoom, isRoomFull, isWinner, playerSide}}>
+    <GameContext.Provider value={{gameState, availableMoves, selected, isMatchmaking, startMatchmaking, selectTile, moveList, isOver, startGame, isStarted, resign, changeMenu, menu, difficulty, setGameDifficulty, setBotGame, newGame, setPlayerSide, roomID, setRoomID, isInRoom, isRoomFull, isWinner, playerSide}}>
       {children}
     </GameContext.Provider>
   )

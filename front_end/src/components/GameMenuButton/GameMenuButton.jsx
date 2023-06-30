@@ -26,7 +26,7 @@ function PlayOnlineButton(){
   const { changeMenu } = useContext(GameContext);
 
   return <StyledButton onClick={ () => { 
-    changeMenu(2) 
+    changeMenu(2);
   }}>
     Play Online
   </StyledButton>

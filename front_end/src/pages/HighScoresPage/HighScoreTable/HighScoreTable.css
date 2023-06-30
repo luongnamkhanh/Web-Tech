@@ -32,7 +32,7 @@ td {
     font-size: 1em;
     font-weight: 500;
     font-family: inherit;
-    background-color: #494c54 !important;
+    background-color: #72757c !important;
     cursor: pointer;
     transition: border-color 0.25s;
     transition-duration: 0.25s;
@@ -45,4 +45,33 @@ td {
 .active{
     border-radius: 5px;
     border: 4px solid #3f836e !important;   
+}
+.pagination {
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+.pagination-button {
+    margin: 40px 20px 0px 0px; 
+}
+.pagination-text {
+    margin: 40px 20px 0px 0px;
+}
+.pagination-button {
+    border-radius: 50%;
+    height: 25px;
+    width: 25px;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff;
+    color:#72757c;
+}
+.pagination-button:hover {
+    color: #22dba1;
 }

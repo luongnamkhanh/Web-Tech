@@ -139,3 +139,17 @@ export async function updatePlayerRank(username, won) {
     }
 }
 
+
+export async function enterPromotion(username) {
+    try {
+        const response = await axios.put('/api/enterPromotionSeries', {
+            username: username,
+        });
+        console.log(response);
+        return null
+    } catch (error) {
+        console.error(error);
+        return error.response.data.error
+    }
+}
+

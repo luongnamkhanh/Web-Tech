@@ -80,9 +80,8 @@ exports.enterPromotionSeries = function(username) {
         if(user.points >= 10) {
             user.in_promotion_series = true;
         } else {
-            throw new Error("User does not have enough points to enter promotion series.");
+            throw new Error(`You have ${user.points} which does not meet 10 points requirement to enter promotion series.`);
         }
-
         return user.save();
     });
 };
